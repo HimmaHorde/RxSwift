@@ -85,7 +85,11 @@ example("of") {
 example("from") {
     let disposeBag = DisposeBag()
     
-    Observable.from(["🐶": "11", "🐱": "22", "🐭": "33", "🐹": "44"])
+    let observable = Observable.from(["🐶": "11", "🐱": "22", "🐭": "33", "🐹": "44"])
+
+    print(type(of: observable))
+
+    observable
         .subscribe(onNext: { print($0) })
         .disposed(by: disposeBag)
 }
@@ -182,6 +186,21 @@ example("deferred") {
         .subscribe(onNext: { print($0) })
         .disposed(by: disposeBag)
 }
+
+/*:
+ ----
+ ## interval
+ 这个方法创建的 Observable 序列每隔一段设定的时间，会发出一个索引数的元素。而且它会一直发送下去。
+ */
+example("interval") {
+    let disposeBag = DisposeBag()
+    let observable = Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+
+    observable.subscribe { event in
+                print(event)
+    }
+}
+
 /*:
  ----
  ## error

@@ -7,12 +7,17 @@
 //
 
 
-/// class: 继承于 Observable 类型
+/// class: 继承于 Observable 类型，大多使用其子类。
 class Producer<Element> : Observable<Element> {
     override init() {
         super.init()
     }
 
+
+    /// 订阅方法
+    ///
+    /// - Parameter observer: 观察者/订阅者
+    /// - Returns: 实现 Disposable 协议的对象
     override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
         if !CurrentThreadScheduler.isScheduleRequired {
             // The returned disposable needs to release all references once it was disposed.

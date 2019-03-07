@@ -8,12 +8,15 @@
 
 extension ObservableType where E : RxAbstractInteger {
     /**
-     Returns an observable sequence that produces a value after each period, using the specified scheduler to run timers and to send out observer messages.
+     创建 Observable 序列每隔一段设定的时间，会发出一个索引数的元素。
+
+        * 它会一直发送
+        * 第一次触发事件 == period
 
      - seealso: [interval operator on reactivex.io](http://reactivex.io/documentation/operators/interval.html)
 
-     - parameter period: Period for producing the values in the resulting sequence.
-     - parameter scheduler: Scheduler to run the timer on.
+     - parameter period: Observable 序列生成值的的间隔事件
+     - parameter scheduler: 计时器运行的调度程序.
      - returns: An observable sequence that produces a value after each period.
      */
     public static func interval(_ period: RxTimeInterval, scheduler: SchedulerType)
@@ -28,12 +31,13 @@ extension ObservableType where E : RxAbstractInteger {
 
 extension ObservableType where E: RxAbstractInteger {
     /**
-     Returns an observable sequence that periodically produces a value after the specified initial relative due time has elapsed, using the specified scheduler to run timers.
+     创建 Observable 序列每隔一段设定的时间，会发出一个索引数的元素，可以设置初次执行的时间
+
 
      - seealso: [timer operator on reactivex.io](http://reactivex.io/documentation/operators/timer.html)
 
-     - parameter dueTime: Relative time at which to produce the first value.
-     - parameter period: Period to produce subsequent values.
+     - parameter dueTime: 产生第一个值的时间
+     - parameter period: 间隔时间
      - parameter scheduler: Scheduler to run timers on.
      - returns: An observable sequence that produces a value after due time has elapsed and then each period.
      */

@@ -7,14 +7,13 @@
 //
 
 extension ObservableType {
-    /*
-     Groups the elements of an observable sequence according to a specified key selector function.
-
-     - seealso: [groupBy operator on reactivex.io](http://reactivex.io/documentation/operators/groupby.html)
-
-     - parameter keySelector: A function to extract the key for each element.
-     - returns: A sequence of observable groups, each of which corresponds to a unique key value, containing all elements that share that same key value.
-     */
+    /// groupBy 操作符将源 Observable 分解为多个子 Observable，然后将这些子 Observable 发送出来。
+    /// 它会将元素通过某个键进行分组，然后将分组后的元素序列以 Observable 的形态发送出来
+    ///
+    /// - seealso: [groupBy operator on reactivex.io](http://reactivex.io/documentation/operators/groupby.html)
+    ///
+    /// - Parameter keySelector: 为每个元素提取 key 的方法
+    /// - Returns:  A sequence of observable groups, each of which corresponds to a unique key value, containing all elements that share that same key value.
     public func groupBy<K: Hashable>(keySelector: @escaping (E) throws -> K)
         -> Observable<GroupedObservable<K,E>> {
         return GroupBy(source: self.asObservable(), selector: keySelector)
