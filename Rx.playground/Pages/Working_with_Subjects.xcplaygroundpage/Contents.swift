@@ -9,7 +9,7 @@
  */
 import RxSwift
 /*:
- # Working with Subjects
+ # 处理订阅
  A Subject is a sort of bridge or proxy that is available in some implementations of Rx that acts as both an observer and `Observable`. Because it is an observer, it can subscribe to one or more `Observable`s, and because it is an `Observable`, it can pass through the items it observes by reemitting them, and it can also emit new items. [More info](http://reactivex.io/documentation/subject.html)
 */
 extension ObservableType {
@@ -45,6 +45,7 @@ example("PublishSubject") {
     subject.addObserver("2").disposed(by: disposeBag)
     subject.onNext("🅰️")
     subject.onNext("🅱️")
+
 }
 /*:
  > This example also introduces using the `onNext(_:)` convenience method, equivalent to `on(.next(_:)`, which causes a new Next event to be emitted to subscribers with the provided `element`. There are also `onError(_:)` and `onCompleted()` convenience methods, equivalent to `on(.error(_:))` and `on(.completed)`, respectively.
@@ -68,7 +69,7 @@ example("ReplaySubject") {
 /*:
  ----
 ## BehaviorSubject
-Broadcasts new events to all subscribers, and the most recent (or initial) value to new subscribers.
+向所有订阅者广播新事件，并向新订户广播最新(或初始)值。
 ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/behaviorsubject.png)
 */
 example("BehaviorSubject") {

@@ -49,11 +49,12 @@ All of these various systems makes our code needlessly complex. Wouldn't it be b
  > These diagrams are called marble diagrams. You can learn more about them at [RxMarbles.com](http://rxmarbles.com).
 */
 /*:
- ### Observables and observers (aka subscribers)
+ ### 可观察和观察者(又名订阅者)
  
  `Observable`s will not execute their subscription closure unless there is a subscriber. In the following example, the closure of the `Observable` will never be executed, because there are no subscribers:
  */
 example("Observable with no subscribers") {
+    print("没有被订阅的订阅源的闭包永远不会被执行")
     _ = Observable<String>.create { observerOfString -> Disposable in
         print("This will never be printed")
         observerOfString.on(.next("😬"))

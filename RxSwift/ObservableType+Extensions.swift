@@ -12,7 +12,7 @@
 
 extension ObservableType {
     /**
-     Subscribes an event handler to an observable sequence.
+      Observable 序列订阅事件处理程序。
      
      - parameter on: Action to invoke for each event in the observable sequence.
      - returns: Subscription object used to unsubscribe from the observable sequence.

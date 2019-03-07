@@ -6,8 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents disposable resource with state tracking.
+/// 表示带有状态跟踪的可处理资源。
 public protocol Cancelable : Disposable {
-    /// Was resource disposed.
+    /// 是已处理资源
     var isDisposed: Bool { get }
 }

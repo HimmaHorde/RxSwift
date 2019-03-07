@@ -8,12 +8,12 @@
 
 extension ObservableType {
     /**
-     Returns an observable sequence that contains a single element.
+     返回包含单个元素的 Observable 序列。
 
      - seealso: [just operator on reactivex.io](http://reactivex.io/documentation/operators/just.html)
 
-     - parameter element: Single element in the resulting observable sequence.
-     - returns: An observable sequence containing the single specified element.
+     - parameter element: 生成 Observable 序列的元素
+     - returns: 包含指定元素的 Observable 序列
      */
     public static func just(_ element: E) -> Observable<E> {
         return Just(element: element)

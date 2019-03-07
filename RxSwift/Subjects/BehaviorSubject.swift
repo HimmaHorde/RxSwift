@@ -6,9 +6,9 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a value that changes over time.
+/// 表示随时间变化的值。
 ///
-/// Observers can subscribe to the subject to receive the last (or initial) value and all subsequent notifications.
+/// 当观察者对 BehaviorSubject 进行订阅时，它会将源 Observable 中最新的元素发送出来（如果不存在最新的元素，就发出默认元素）。然后将随后产生的元素发送出来。
 public final class BehaviorSubject<Element>
     : Observable<Element>
     , SubjectType
@@ -20,7 +20,7 @@ public final class BehaviorSubject<Element>
     typealias Observers = AnyObserver<Element>.s
     typealias DisposeKey = Observers.KeyType
     
-    /// Indicates whether the subject has any observers
+    /// 显示是否有任何观察者
     public var hasObservers: Bool {
         self._lock.lock()
         let value = self._observers.count > 0

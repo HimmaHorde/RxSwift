@@ -28,7 +28,7 @@ example("never") {
 /*:
  ----
  ## empty
- Creates an empty `Observable` sequence that only emits a Completed event. [More info](http://reactivex.io/documentation/operators/empty-never-throw.html)
+ 创建一个只发出 Completed 事件的 `Observable` 序列。 [More info](http://reactivex.io/documentation/operators/empty-never-throw.html)
  */
 example("empty") {
     let disposeBag = DisposeBag()
@@ -43,7 +43,7 @@ example("empty") {
  > This example also introduces chaining together creating and subscribing to an `Observable` sequence.
  ----
  ## just
- Creates an `Observable` sequence with a single element. [More info](http://reactivex.io/documentation/operators/just.html)
+ 该方法通过传入一个默认值来初始化 `Observable` 序列。 [More info](http://reactivex.io/documentation/operators/just.html)
  */
 example("just") {
     let disposeBag = DisposeBag()
@@ -57,7 +57,7 @@ example("just") {
 /*:
  ----
  ## of
- Creates an `Observable` sequence with a fixed number of elements.
+ 创建固定元素的 `Observable`.
  */
 example("of") {
     let disposeBag = DisposeBag()
@@ -80,12 +80,12 @@ example("of") {
 ```
  ----
  ## from
- Creates an `Observable` sequence from a `Sequence`, such as an `Array`, `Dictionary`, or `Set`.
+ 从一个数组地点或者set 里面获取元素
  */
 example("from") {
     let disposeBag = DisposeBag()
     
-    Observable.from(["🐶", "🐱", "🐭", "🐹"])
+    Observable.from(["🐶": "11", "🐱": "22", "🐭": "33", "🐹": "44"])
         .subscribe(onNext: { print($0) })
         .disposed(by: disposeBag)
 }
@@ -139,14 +139,14 @@ example("repeatElement") {
  > This example also introduces using the `take` operator to return a specified number of elements from the start of a sequence.
  ----
  ## generate
- Creates an `Observable` sequence that generates values for as long as the provided condition evaluates to `true`.
+ 该方法创建一个只有当提供的所有的判断条件都为 true 的时候，才会给出动作的 Observable 序列。.
  */
 example("generate") {
     let disposeBag = DisposeBag()
     
     Observable.generate(
             initialState: 0,
-            condition: { $0 < 3 },
+            condition: { $0 < 13 },
             iterate: { $0 + 1 }
         )
         .subscribe(onNext: { print($0) })

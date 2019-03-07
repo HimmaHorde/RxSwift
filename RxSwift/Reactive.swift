@@ -23,12 +23,12 @@
  */
 
 public struct Reactive<Base> {
-    /// Base object to extend.
+    /// 要扩展的基本对象。
     public let base: Base
 
-    /// Creates extensions with base object.
+    /// 使用对象创建扩展
     ///
-    /// - parameter base: Base object.
+    /// - parameter base: 对象。
     public init(_ base: Base) {
         self.base = base
     }

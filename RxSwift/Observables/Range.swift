@@ -8,14 +8,19 @@
 
 extension ObservableType where E : RxAbstractInteger {
     /**
-     Generates an observable sequence of integral numbers within a specified range, using the specified scheduler to generate and send out observer messages.
+     该方法通过指定起始和结束数值，创建一个以这个范围内所有值作为初始值的 Observable 序列。
+
+         //使用range()
+         let observable = Observable.range(start: 1, count: 5)
+         //使用of()
+         let observable = Observable.of(1, 2, 3 ,4 ,5)
 
      - seealso: [range operator on reactivex.io](http://reactivex.io/documentation/operators/range.html)
 
-     - parameter start: The value of the first integer in the sequence.
-     - parameter count: The number of sequential integers to generate.
-     - parameter scheduler: Scheduler to run the generator loop on.
-     - returns: An observable sequence that contains a range of sequential integral numbers.
+     - parameter start: 连续整数序列的第一个值
+     - parameter count: 连续序列的元素个数
+     - parameter scheduler: 生成 Observable 序列的调度程序
+     - returns: 包含一系列连序整数的 Observable 序列。
      */
     public static func range(start: E, count: E, scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance) -> Observable<E> {
         return RangeProducer<E>(start: start, count: count, scheduler: scheduler)

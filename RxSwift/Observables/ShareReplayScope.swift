@@ -6,7 +6,7 @@
 //  Copyright © 2017 Krunoslav Zaher. All rights reserved.
 //
 
-/// Subject lifetime scope
+/// Subject 生命周期
 public enum SubjectLifetimeScope {
     /**
      **Each connection will have it's own subject instance to store replay events.**

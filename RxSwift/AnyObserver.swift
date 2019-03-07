@@ -6,14 +6,14 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// A type-erased `ObserverType`.
+/// A type-erased `ObserverType`. [类型擦除](https://www.jianshu.com/p/0a9c5c66a5fd)
 ///
 /// Forwards operations to an arbitrary underlying observer with the same `Element` type, hiding the specifics of the underlying observer type.
 public struct AnyObserver<Element> : ObserverType {
-    /// The type of elements in sequence that observer can observe.
+    /// 观察者可以观察到的序列元素的类型。
     public typealias E = Element
     
-    /// Anonymous event handler type.
+    /// 匿名事件处理程序类型
     public typealias EventHandler = (Event<Element>) -> Void
 
     private let observer: EventHandler

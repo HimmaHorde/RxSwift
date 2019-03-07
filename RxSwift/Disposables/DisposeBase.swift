@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Base class for all disposables.
+/// 资源处理的基类
 public class DisposeBase {
     init() {
 #if TRACE_RESOURCES

@@ -10,7 +10,7 @@ extension ObservableType {
     // MARK: create
 
     /**
-     Creates an observable sequence from a specified subscribe method implementation.
+     通过指定的订阅方法创建 Observable 序列。
 
      - seealso: [create operator on reactivex.io](http://reactivex.io/documentation/operators/create.html)
 
@@ -61,6 +61,8 @@ final private class AnonymousObservableSink<O: ObserverType>: Sink<O>, ObserverT
     }
 }
 
+
+/// 匿名函数  Observable 序列 ——> Create 方法调用此类生成 Observable 对象
 final private class AnonymousObservable<Element>: Producer<Element> {
     typealias SubscribeHandler = (AnyObserver<Element>) -> Disposable
 

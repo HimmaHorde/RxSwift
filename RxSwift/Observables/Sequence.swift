@@ -10,13 +10,13 @@ extension ObservableType {
     // MARK: of
 
     /**
-     This method creates a new Observable instance with a variable number of elements.
+     通过同一类型的可变数量的参数生成 Observable 序列
 
      - seealso: [from operator on reactivex.io](http://reactivex.io/documentation/operators/from.html)
 
-     - parameter elements: Elements to generate.
-     - parameter scheduler: Scheduler to send elements on. If `nil`, elements are sent immediately on subscription.
-     - returns: The observable sequence whose elements are pulled from the given arguments.
+     - parameter elements: 用来生成 Observable 序列的元素
+     - parameter scheduler: 发送元素的调度程序。如果`nil`，元素将在订阅时立即发送.
+     - returns: 根据给定元素生成的 Observable 序列。
      */
     public static func of(_ elements: E ..., scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance) -> Observable<E> {
         return ObservableSequence(elements: elements, scheduler: scheduler)
@@ -25,7 +25,7 @@ extension ObservableType {
 
 extension ObservableType {
     /**
-     Converts an array to an observable sequence.
+     数组转化为 Observable 序列
 
      - seealso: [from operator on reactivex.io](http://reactivex.io/documentation/operators/from.html)
 
@@ -36,7 +36,7 @@ extension ObservableType {
     }
 
     /**
-     Converts a sequence to an observable sequence.
+     序列转为是 Observable 序列
 
      - seealso: [from operator on reactivex.io](http://reactivex.io/documentation/operators/from.html)
 

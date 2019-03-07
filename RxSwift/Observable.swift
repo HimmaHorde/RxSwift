@@ -8,9 +8,9 @@
 
 /// A type-erased `ObservableType`. 
 ///
-/// It represents a push style sequence.
+/// 它表示一个push样式序列.
 public class Observable<Element> : ObservableType {
-    /// Type of elements in sequence.
+    /// 序列中元素的类型。
     public typealias E = Element
     
     init() {
@@ -18,7 +18,8 @@ public class Observable<Element> : ObservableType {
         _ = Resources.incrementTotal()
 #endif
     }
-    
+
+    // Observable 中并未直接实现 subscribe 方法，这里直接强制抛出错误，需要被重写。
     public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
         rxAbstractMethod()
     }

@@ -9,12 +9,12 @@
 extension ObservableType {
 
     /**
-     Prepends a sequence of values to an observable sequence.
+     将一个值序列加到一个 Observable 序列的前面
 
      - seealso: [startWith operator on reactivex.io](http://reactivex.io/documentation/operators/startwith.html)
 
-     - parameter elements: Elements to prepend to the specified sequence.
-     - returns: The source sequence prepended with the specified values.
+     - parameter elements: 需要添加到指定序列前的元素
+     - returns: 以指定值为前缀的新序列
      */
     public func startWith(_ elements: E ...)
         -> Observable<E> {
@@ -22,10 +22,16 @@ extension ObservableType {
     }
 }
 
+/// Classs: StartWith 继承于 Producer
 final private class StartWith<Element>: Producer<Element> {
     let elements: [Element]
     let source: Observable<Element>
 
+    /// 根据给出的源序列和新增值生成一个新的序列
+    ///
+    /// - Parameters:
+    ///   - source: 源序列
+    ///   - elements: 新增的值，将被放置在新序列的前部
     init(source: Observable<Element>, elements: [Element]) {
         self.source = source
         self.elements = elements

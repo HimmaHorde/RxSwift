@@ -8,7 +8,7 @@
 
 extension ObservableType {
     /**
-     Generates an observable sequence that repeats the given element infinitely, using the specified scheduler to send out observer messages.
+     该方法创建一个可以无限发出给定元素的 Event 的 Observable 序列（永不终止）。 
 
      - seealso: [repeat operator on reactivex.io](http://reactivex.io/documentation/operators/repeat.html)
 

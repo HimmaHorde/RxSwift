@@ -8,16 +8,15 @@
 
 extension ObservableType {
     /**
-     Generates an observable sequence by running a state-driven loop producing the sequence's elements, using the specified scheduler
-     to run the loop send out observer messages.
+     通过指定方法生成元素，当元素不符合预设调制时 `complete`。
 
      - seealso: [create operator on reactivex.io](http://reactivex.io/documentation/operators/create.html)
 
-     - parameter initialState: Initial state.
-     - parameter condition: Condition to terminate generation (upon returning `false`).
-     - parameter iterate: Iteration step function.
-     - parameter scheduler: Scheduler on which to run the generator loop.
-     - returns: The generated sequence.
+     - parameter initialState: 初始状态.
+     - parameter condition: 判断条件 == false 结束
+     - parameter iterate: 值的迭代方法（生成新值的方法）
+     - parameter scheduler: 调度程序 Scheduler
+     - returns: 生成的序列
      */
     public static func generate(initialState: E, condition: @escaping (E) throws -> Bool, scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance, iterate: @escaping (E) throws -> E) -> Observable<E> {
         return Generate(initialState: initialState, condition: condition, iterate: iterate, resultSelector: { $0 }, scheduler: scheduler)

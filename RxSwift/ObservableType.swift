@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a push style sequence.
+/// protocol:表示push样式序列,继承自 `ObservableConvertibleType`。
 public protocol ObservableType : ObservableConvertibleType {
     /**
     Subscribes `observer` to receive events for this sequence.
@@ -36,7 +36,7 @@ public protocol ObservableType : ObservableConvertibleType {
 
 extension ObservableType {
     
-    /// Default implementation of converting `ObservableType` to `Observable`.
+    /// 默认实现：将遵循 `ObservableType` 协议的对象转化为 `Observable` 对象.
     public func asObservable() -> Observable<E> {
         // temporary workaround
         //return Observable.create(subscribe: self.subscribe)

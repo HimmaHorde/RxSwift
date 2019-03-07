@@ -6,8 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a disposable resource.
+/// protocol：可被清除的资源。
 public protocol Disposable {
-    /// Dispose resource.
+    /// 清除资源。
     func dispose()
 }

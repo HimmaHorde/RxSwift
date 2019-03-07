@@ -31,8 +31,10 @@
         }
     }
 #endif
-
-/// Swift does not implement abstract methods. This method is used as a runtime check to ensure that methods which intended to be abstract (i.e., they should be implemented in subclasses) are not called directly on the superclass.
+///强制抛出错误
+///
+/// swift 没有抽象方法，为了实现类似抽象方法，是子类重写父类的某个方法,
+/// 我们就可以利用 fatalError 来在父类中强制抛出错误，以保证使用这些代码的开发者留意到他们必须在自己的子类中实现相关方法。
 func rxAbstractMethod(file: StaticString = #file, line: UInt = #line) -> Swift.Never {
     rxFatalError("Abstract method", file: file, line: line)
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a disposable that does nothing on disposal.
+/// 不做任何处理.
 ///
 /// Nop = No Operation
 fileprivate struct NopDisposable : Disposable {
@@ -17,14 +17,14 @@ fileprivate struct NopDisposable : Disposable {
         
     }
     
-    /// Does nothing.
+    /// 啥都不做
     public func dispose() {
     }
 }
 
 extension Disposables {
     /**
-     Creates a disposable that does nothing on disposal.
+     无操作的资源处理
      */
     static public func create() -> Disposable {
         return NopDisposable.noOp
