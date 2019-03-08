@@ -13,6 +13,11 @@
 extension ObservableType {
     /**
       Observable 序列订阅事件处理程序。
+
+     常用的 subscribe 方法,内部匿名生成一个观察者调用如下方法
+
+            func subscribe<O: ObserverType>(_ observer: O) -> Disposable
+
      
      - parameter on: Action to invoke for each event in the observable sequence.
      - returns: Subscription object used to unsubscribe from the observable sequence.
@@ -24,16 +29,14 @@ extension ObservableType {
             }
             return self.asObservable().subscribe(observer)
     }
-    
-    
+        
     /**
-     Subscribes an element handler, an error handler, a completion handler and disposed handler to an observable sequence.
+     订阅next、error、conplete 和已处理处理程序到可观察序列。
      
      - parameter onNext: Action to invoke for each element in the observable sequence.
      - parameter onError: Action to invoke upon errored termination of the observable sequence.
      - parameter onCompleted: Action to invoke upon graceful termination of the observable sequence.
-     - parameter onDisposed: Action to invoke upon any type of termination of sequence (if the sequence has
-     gracefully completed, errored, or if the generation is canceled by disposing subscription).
+     - parameter onDisposed: 序列结束执行，处理资源的事件
      - returns: Subscription object used to unsubscribe from the observable sequence.
      */
     public func subscribe(onNext: ((E) -> Void)? = nil, onError: ((Swift.Error) -> Void)? = nil, onCompleted: (() -> Void)? = nil, onDisposed: (() -> Void)? = nil)

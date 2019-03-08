@@ -6,8 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// 表示带有状态跟踪的可处理资源。
+/// 可释放资源协议，资源释放状态协议
 public protocol Cancelable : Disposable {
-    /// 是已处理资源
+    /// 资源是否已被释放
     var isDisposed: Bool { get }
 }

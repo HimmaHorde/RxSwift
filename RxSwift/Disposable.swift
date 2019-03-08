@@ -6,8 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// protocol：可被清除的资源。
+/// protocol：可释放资源协议。
 public protocol Disposable {
-    /// 清除资源。
+    /// 释放资源。
     func dispose()
 }

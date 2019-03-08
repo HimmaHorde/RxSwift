@@ -8,16 +8,16 @@
 
 /// Supports push-style iteration over an observable sequence.
 public protocol ObserverType {
-    /// The type of elements in sequence that observer can observe.
+    /// 观察者可以订阅序列的元素类型
     associatedtype E
 
-    /// Notify observer about sequence event.
+    /// 将 `Observable` 序列事件通知观察者
     ///
-    /// - parameter event: Event that occurred.
+    /// - parameter event: 发生的事件
     func on(_ event: Event<E>)
 }
 
-/// Convenience API extensions to provide alternate next, error, completed events
+/// 为 next, error, completed 事件提供便捷 API
 extension ObserverType {
     
     /// Convenience method equivalent to `on(.next(element: E))`

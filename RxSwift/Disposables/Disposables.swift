@@ -6,7 +6,9 @@
 //  Copyright © 2016 Krunoslav Zaher. All rights reserved.
 //
 
-/// A collection of utility methods for common disposable operations.
+/// 资源管理方法集合
+///
+/// 通过拓展 extension ，为 Disposables 添加类方法。
 public struct Disposables {
     private init() {}
 }

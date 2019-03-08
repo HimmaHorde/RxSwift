@@ -7,7 +7,7 @@
 //
 
 extension Disposable {
-    /// Adds `self` to `bag`
+    /// 把 `self` (Disposable)  添加到 `bag` 中
     ///
     /// - parameter bag: `DisposeBag` to add `self` to.
     public func disposed(by bag: DisposeBag) {

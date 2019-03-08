@@ -7,14 +7,14 @@
 //
 
 
-/// class: 继承于 Observable 类型，大多使用其子类。
+/// class: 继承于 Observable 类型，定义了关键方法 run（子类需要重写）。
 class Producer<Element> : Observable<Element> {
     override init() {
         super.init()
     }
 
 
-    /// 订阅方法
+    /// 实现 Observable 中 subscribe 方法
     ///
     /// - Parameter observer: 观察者/订阅者
     /// - Returns: 实现 Disposable 协议的对象
@@ -38,6 +38,12 @@ class Producer<Element> : Observable<Element> {
         }
     }
 
+
+    /// Producer 核心函数，子类需重写。
+    ///
+    /// - Parameters:
+    ///   - observer: 观察者
+    ///   - cancel:
     func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.E == Element {
         rxAbstractMethod()
     }

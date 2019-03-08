@@ -22,7 +22,7 @@ public final class SingleAssignmentDisposable : DisposeBase, Cancelable {
     private var _state = AtomicInt(0)
     private var _disposable = nil as Disposable?
 
-    /// - returns: A value that indicates whether the object is disposed.
+    /// - returns: 表示资源是否已被释放
     public var isDisposed: Bool {
         return isFlagSet(&self._state, DisposeState.disposed.rawValue)
     }

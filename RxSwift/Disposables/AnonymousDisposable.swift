@@ -15,7 +15,8 @@ fileprivate final class AnonymousDisposable : DisposeBase, Cancelable {
     private var _isDisposed = AtomicInt(0)
     private var _disposeAction: DisposeAction?
 
-    /// - returns: Was resource disposed.
+
+    /// 资源是否已被释放
     public var isDisposed: Bool {
         return isFlagSet(&self._isDisposed, 1)
     }
