@@ -6,6 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+/// 基类,内含抽象方法 onCore
 class ObserverBase<ElementType> : Disposable, ObserverType {
     typealias E = ElementType
 

@@ -18,23 +18,25 @@ public struct AnyObserver<Element> : ObserverType {
 
     private let observer: EventHandler
 
-    /// Construct an instance whose `on(event)` calls `eventHandler(event)`
+    /// 构造一个实例, `on(event)` 方法调用 `eventHandler(event)`
     ///
     /// - parameter eventHandler: Event handler that observes sequences events.
     public init(eventHandler: @escaping EventHandler) {
         self.observer = eventHandler
     }
     
-    /// Construct an instance whose `on(event)` calls `observer.on(event)`
+    /// 构造一个实例,`on(event)` 方法调用 `observer.on(event)`.
     ///
-    /// - parameter observer: Observer that receives sequence events.
+    /// 用于将匿名和私有的观察者转化为 AnyObserver
+    ///
+    /// - parameter observer: 接受序列时间的观察者
     public init<O : ObserverType>(_ observer: O) where O.E == Element {
         self.observer = observer.on
     }
     
-    /// Send `event` to this observer.
+    /// 发送 `event` 给这个观察者.
     ///
-    /// - parameter event: Event instance.
+    /// - parameter event: 事件实例.
     public func on(_ event: Event<Element>) {
         return self.observer(event)
     }
@@ -53,7 +55,7 @@ extension AnyObserver {
 }
 
 extension ObserverType {
-    /// Erases type of observer and returns canonical observer.
+    /// 可擦除类型观察者转化为 AnyObserver 类型
     ///
     /// - returns: type erased observer.
     public func asObserver() -> AnyObserver<E> {

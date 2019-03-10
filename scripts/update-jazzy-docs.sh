@@ -7,13 +7,13 @@ function updateDocs() {
   SIMULATOR=$4
   MODULE=$5
 
-  ensure_simulator_available "${SIMULATOR}"
-  SIMULATOR_GUID=`simulator_ids "${SIMULATOR}"`
-  DESTINATION='id='$SIMULATOR_GUID''
+  # ensure_simulator_available "${SIMULATOR}"
+  # SIMULATOR_GUID=`simulator_ids "${SIMULATOR}"`
+  # DESTINATION='id='$SIMULATOR_GUID''
 
   set -x
   killall Simulator || true
-  jazzy --config .jazzy.yml -m "${MODULE}" -x -workspace,"${WORKSPACE}",-scheme,"${SCHEME}",-configuration,"${CONFIGURATION}",-derivedDataPath,"${BUILD_DIRECTORY}",-destination,"$DESTINATION"
+  jazzy --config .jazzy.yml -m "${MODULE}" -x -workspace,"${WORKSPACE}",-scheme,"${SCHEME}",-configuration,"${CONFIGURATION}",-derivedDataPath,"${BUILD_DIRECTORY}"
   set +x
 }
 
