@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a group of disposable resources that are disposed together.
+/// 表示一起处理的一组 Disposable。
 public final class CompositeDisposable : DisposeBase, Cancelable {
     /// Key used to remove disposable from composite disposable
     public struct DisposeKey {

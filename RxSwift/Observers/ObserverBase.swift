@@ -7,6 +7,7 @@
 //
 
 /// 基类,内含抽象方法 onCore
+/// 调用 dispose ，或者 completed error 方法后不在接收事件。
 class ObserverBase<ElementType> : Disposable, ObserverType {
     typealias E = ElementType
 

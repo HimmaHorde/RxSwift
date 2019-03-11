@@ -105,11 +105,10 @@ example("create") {
     let myJust = { (element: String) -> Observable<String> in
         return Observable.create { observer in
             observer.on(.next(element))
-            observer.on(.completed)
             return Disposables.create()
         }
     }
-        
+
     myJust("🔴")
         .subscribe { print($0) }
         .disposed(by: disposeBag)

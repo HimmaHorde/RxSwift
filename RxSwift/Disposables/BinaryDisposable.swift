@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents two disposable resources that are disposed together.
+/// 表示来一起处理的 disposable 资源
 private final class BinaryDisposable : DisposeBase, Cancelable {
 
     private var _isDisposed = AtomicInt(0)
@@ -15,7 +15,7 @@ private final class BinaryDisposable : DisposeBase, Cancelable {
     private var _disposable1: Disposable?
     private var _disposable2: Disposable?
 
-    /// - returns: Was resource disposed.
+    /// - returns: 是否处理资源.
     var isDisposed: Bool {
         return isFlagSet(&self._isDisposed, 1)
     }
@@ -30,7 +30,7 @@ private final class BinaryDisposable : DisposeBase, Cancelable {
         super.init()
     }
 
-    /// Calls the disposal action if and only if the current instance hasn't been disposed yet.
+    /// 当且仅当当前实例尚未被释放时调用处理操作。
     ///
     /// After invoking disposal action, disposal action will be dereferenced.
     func dispose() {

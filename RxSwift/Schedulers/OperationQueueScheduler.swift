@@ -11,9 +11,9 @@ import class Foundation.OperationQueue
 import class Foundation.BlockOperation
 import Dispatch
 
-/// Abstracts the work that needs to be performed on a specific `NSOperationQueue`.
+/// OperationQueueScheduler 抽象了 NSOperationQueue。
 ///
-/// This scheduler is suitable for cases when there is some bigger chunk of work that needs to be performed in background and you want to fine tune concurrent processing using `maxConcurrentOperationCount`.
+/// 它具备 NSOperationQueue 的一些特点，例如，你可以通过设置 maxConcurrentOperationCount，来控制同时执行并发任务的最大数量。
 public class OperationQueueScheduler: ImmediateSchedulerType {
     public let operationQueue: OperationQueue
     public let queuePriority: Operation.QueuePriority

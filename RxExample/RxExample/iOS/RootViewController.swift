@@ -29,9 +29,15 @@ public class RootViewController : UITableViewController {
 //
 //        }).dispose()
 
-        Observable.of("🐶", "🐱", "🐭", "🐹")
-            .subscribe(onNext: { element in
-                print(element)
-            }).dispose()
+        let myJust = { (element: String) -> Observable<String> in
+            return Observable.create { observer in
+                observer.on(.next(element))
+                observer.on(.completed)
+                return Disposables.create()
+            }
+        }
+
+        myJust("🔴")
+            .subscribe { print($0) }
     }
 }

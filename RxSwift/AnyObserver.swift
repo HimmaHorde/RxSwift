@@ -31,6 +31,7 @@ public struct AnyObserver<Element> : ObserverType {
     ///
     /// - parameter observer: 接受序列时间的观察者
     public init<O : ObserverType>(_ observer: O) where O.E == Element {
+        // 持有 observe 的 on 方法，形成强引用。
         self.observer = observer.on
     }
     
@@ -62,8 +63,7 @@ extension ObserverType {
         return AnyObserver(self)
     }
 
-    /// Transforms observer of type R to type E using custom transform method.
-    /// Each event sent to result observer is transformed and sent to `self`.
+    /// 使用自定义转换方法将R类型的观察者转换为E类型。每个发送到结果观察者的事件都被转换并发送到“self”。
     ///
     /// - returns: observer that transforms events.
     public func mapObserver<R>(_ transform: @escaping (R) throws -> E) -> AnyObserver<R> {

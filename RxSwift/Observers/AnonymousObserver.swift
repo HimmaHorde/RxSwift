@@ -20,6 +20,7 @@ final class AnonymousObserver<ElementType> : ObserverBase<ElementType> {
         self._eventHandler = eventHandler
     }
 
+    // on 方法调用此方法处理事件
     override func onCore(_ event: Event<Element>) {
         return self._eventHandler(event)
     }

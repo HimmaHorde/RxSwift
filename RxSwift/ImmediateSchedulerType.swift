@@ -9,7 +9,7 @@
 /// Represents an object that immediately schedules units of work.
 public protocol ImmediateSchedulerType {
     /**
-    Schedules an action to be executed immediately.
+    立即执行 action 事件
     
     - parameter state: State passed to the action to be executed.
     - parameter action: Action to be executed.
@@ -20,7 +20,7 @@ public protocol ImmediateSchedulerType {
 
 extension ImmediateSchedulerType {
     /**
-    Schedules an action to be executed recursively.
+    调度递归执行的操作
     
     - parameter state: State passed to the action to be executed.
     - parameter action: Action to execute recursively. The last parameter passed to the action is used to trigger recursive scheduling of the action, passing in recursive invocation state.

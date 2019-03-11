@@ -158,9 +158,9 @@ final class RecursiveImmediateScheduler<State> {
         self._scheduler = scheduler
     }
     
-    // immediate scheduling
+    // 立即执行
     
-    /// Schedules an action to be executed recursively.
+    /// 递归执行事件
     ///
     /// - parameter state: State passed to the action to be executed.
     func schedule(_ state: State) {
