@@ -55,6 +55,8 @@ fileprivate final class SinkDisposer: Cancelable {
         case sinkAndSubscriptionSet = 2
     }
 
+
+    /// 0：初始状态, 2：设置接收器和订阅，3：已释放 ，1：未 set 调用了释放，要求 set 时立即释放。
     private var _state = AtomicInt(0)
     private var _sink: Disposable?
     private var _subscription: Disposable?
@@ -67,11 +69,23 @@ fileprivate final class SinkDisposer: Cancelable {
         self._sink = sink
         self._subscription = subscription
 
+        // _state = 0 -> _state = 2, previousState = 0
+        // _state = 2 -> _state = 2, previousState = 2
+        // _state = 3 -> _state = 3, previousState = 3
+        // _state 值变为 2 ，表示已设置 Sink 和 Subscription
         let previousState = fetchOr(&self._state, DisposeState.sinkAndSubscriptionSet.rawValue)
+
+        // 0 & 2 = 0
+        // 2 & 2 = 2
+        // 3 & 2 = 2
+        // 重复设置，抛出错误。只允许一次。
         if (previousState & DisposeState.sinkAndSubscriptionSet.rawValue) != 0 {
             rxFatalError("Sink and subscription were already set")
         }
 
+        // 1 的与运算，结果为 1 或者 0
+        // 当 previousState = 1 -> 1
+        // 未设置之前释放，_state = 1 , 立即释放资源 。
         if (previousState & DisposeState.disposed.rawValue) != 0 {
             sink.dispose()
             subscription.dispose()
@@ -81,12 +95,20 @@ fileprivate final class SinkDisposer: Cancelable {
     }
 
     func dispose() {
+        // 未设置 sink ，_state = 0 -> 1
+        // 正常 set 之后，_state = 2 -> 3
+        // 释放之后 _state = 3
         let previousState = fetchOr(&self._state, DisposeState.disposed.rawValue)
 
+        // previousState = 2 ,previousState = 0 可跳过此判断。
+        // 只要之前未执行过 dispose() 就可以继续往下走。
+        // 防止重复释放
         if (previousState & DisposeState.disposed.rawValue) != 0 {
             return
         }
 
+        // 仅 previousState = 2 ，也就是设置过 sink 之后才能释放
+        // 当 previousState = 0 ，未设置 sink 不需要释放，等待用户设置 sink 时直接释放
         if (previousState & DisposeState.sinkAndSubscriptionSet.rawValue) != 0 {
             guard let sink = self._sink else {
                 rxFatalError("Sink not set")

@@ -57,6 +57,7 @@ final private class ObservableSequenceSink<S: Sequence, O: ObserverType>: Sink<O
         super.init(observer: observer, cancel: cancel)
     }
 
+    // 发送所有事件，complete 之后调用 dispose
     func run() -> Disposable {
         return self._parent._scheduler.scheduleRecursive(self._parent._elements.makeIterator()) { iterator, recurse in
             var mutableIterator = iterator
