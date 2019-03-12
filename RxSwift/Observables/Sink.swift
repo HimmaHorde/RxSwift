@@ -6,6 +6,9 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+
+/// Sink 持有 ObserverType ，Cancelable ；
+/// > dispose() 执行事调用 Cancelable 的 dispose() 方法，取消对 Cancelable 的引用。
 class Sink<O : ObserverType> : Disposable {
     fileprivate let _observer: O
     fileprivate let _cancel: Cancelable
@@ -23,6 +26,9 @@ class Sink<O : ObserverType> : Disposable {
         self._cancel = cancel
     }
 
+    /// 调用 observer.on 方法处理事件，当 dispose() 方法被调用后不在响应事件。
+    ///
+    /// - Parameter event: 事件
     final func forwardOn(_ event: Event<O.E>) {
         #if DEBUG
             self._synchronizationTracker.register(synchronizationErrorMessage: .default)

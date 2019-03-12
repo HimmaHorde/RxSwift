@@ -35,7 +35,8 @@ final private class GenerateSink<S, O: ObserverType>: Sink<O> {
         self._state = parent._initialState
         super.init(observer: observer, cancel: cancel)
     }
-    
+
+    /// 发送事件到 Observer
     func run() -> Disposable {
         return self._parent._scheduler.scheduleRecursive(true) { isFirst, recurse -> Void in
             do {

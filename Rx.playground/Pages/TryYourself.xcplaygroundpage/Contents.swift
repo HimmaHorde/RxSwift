@@ -19,9 +19,10 @@ playgroundShouldContinueIndefinitely()
 
 typealias AAA = (String)->()
 
-class person {
+class Person {
     var name: String?
     var age: Int?
+    var friend: Person?
 
     init(name:String, age:Int) {
         self.name = name
@@ -29,23 +30,33 @@ class person {
     }
 
     func show(_ other: String){
-        print("\(name) + \(other)")
+        print(" + \(other)")
     }
     deinit {
-        print("person dealloc")
+        print("\(name!) dealloc")
     }
 }
 
+class KK {
+    var name: String?
+    weak var ac: AAA?
+}
+//var ac:AAA?
+
+let k = KK.init()
+k.name = "KK"
 
 func test() {
-    var p = person.init(name: "山", age: 19)
-    var ac:AAA?
-    ac = p.show
-    ac?("heheda")
+    var p = Person.init(name: "山", age: 19)
+    k.ac = p.show
 }
 
 test()
 print("66666")
+//k.ac = nil
+
+
+
 
 
 // 设置为 nil 之前 person 对象未被释放

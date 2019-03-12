@@ -78,7 +78,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
         }
     }
 
-    /// Gets a value that indicates whether the caller must call a `schedule` method.
+    /// 返回一个值，用来表示调用者是否必须调用 `schedule` 方法
     public static fileprivate(set) var isScheduleRequired: Bool {
         get {
             return pthread_getspecific(CurrentThreadScheduler.isScheduleRequiredKey) == nil

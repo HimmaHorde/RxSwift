@@ -20,7 +20,7 @@ class Producer<Element> : Observable<Element> {
     /// - Returns: 实现 Disposable 协议的对象
     override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
         if !CurrentThreadScheduler.isScheduleRequired {
-            // The returned disposable needs to release all references once it was disposed.
+            // 返回的一次性引用需要在处理后释放所有引用
             let disposer = SinkDisposer()
             let sinkAndSubscription = self.run(observer, cancel: disposer)
             disposer.setSinkAndSubscription(sink: sinkAndSubscription.sink, subscription: sinkAndSubscription.subscription)
@@ -49,6 +49,8 @@ class Producer<Element> : Observable<Element> {
     }
 }
 
+
+/// 管理 sink 类的资源管理器
 fileprivate final class SinkDisposer: Cancelable {
     fileprivate enum DisposeState: Int32 {
         case disposed = 1
