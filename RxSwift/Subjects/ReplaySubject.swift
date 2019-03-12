@@ -9,6 +9,7 @@
 /// Represents an object that is both an observable sequence as well as an observer.
 ///
 /// Each notification is broadcasted to all subscribed and future observers, subject to buffer trimming policies.
+/// > 可以看成抽象类 具体实现为 ReplayOne
 public class ReplaySubject<Element>
     : Observable<Element>
     , SubjectType
@@ -69,7 +70,7 @@ public class ReplaySubject<Element>
 
     /// Creates new instance of `ReplaySubject` that replays at most `bufferSize` last elements of sequence.
     ///
-    /// - parameter bufferSize: Maximal number of elements to replay to observer after subscription.
+    /// - parameter bufferSize: 订阅后重播给观察者的最大元素数。
     /// - returns: New instance of replay subject.
     public static func create(bufferSize: Int) -> ReplaySubject<Element> {
         if bufferSize == 1 {
@@ -80,9 +81,8 @@ public class ReplaySubject<Element>
         }
     }
 
-    /// Creates a new instance of `ReplaySubject` that buffers all the elements of a sequence.
-    /// To avoid filling up memory, developer needs to make sure that the use case will only ever store a 'reasonable'
-    /// number of elements.
+    /// 创建一个新的“ReplaySubject”实例，缓冲序列的所有元素。
+    /// 为了避免内存被填满，开发人员需要确保用例只存储“合理”数量的元素。
     public static func createUnbounded() -> ReplaySubject<Element> {
         return ReplayAll()
     }

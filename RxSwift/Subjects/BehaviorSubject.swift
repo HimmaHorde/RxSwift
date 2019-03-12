@@ -32,15 +32,18 @@ public final class BehaviorSubject<Element>
     
     // state
     private var _isDisposed = false
+    /// 最近的值
     private var _element: Element
+    /// 所有观察者
     private var _observers = Observers()
+    /// 结束 Event
     private var _stoppedEvent: Event<Element>?
 
     #if DEBUG
         fileprivate let _synchronizationTracker = SynchronizationTracker()
     #endif
 
-    /// Indicates whether the subject has been disposed.
+    /// 资源是否已处理
     public var isDisposed: Bool {
         return self._isDisposed
     }
