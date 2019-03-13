@@ -12,28 +12,27 @@ import RxSwift
 extension ObservableType {
     
     /**
-    Creates new subscription and sends elements to observer.
+    创建新的订阅并向观察者发送元素。
     
-    In this form it's equivalent to `subscribe` method, but it communicates intent better, and enables
-    writing more consistent binding code.
+    这种情况等同于 `subscribe` 方法, 但是表达的意思更加清晰，绑定 API 更加统一。
     
-    - parameter to: Observer that receives events.
-    - returns: Disposable object that can be used to unsubscribe the observer.
+    - parameter to: 接收事件的观察者。
+    - returns: 可用于取消订阅观察者的一次性对象.
     */
     public func bind<O: ObserverType>(to observer: O) -> Disposable where O.E == E {
         return self.subscribe(observer)
     }
 
     /**
-     Creates new subscription and sends elements to observer.
+     创建新的订阅并向观察者发送元素。
 
-     In this form it's equivalent to `subscribe` method, but it communicates intent better, and enables
-     writing more consistent binding code.
+     这种情况等同于 `subscribe` 方法, 但是表达的意思更加清晰，绑定 API 更加统一。
 
-     - parameter to: Observer that receives events.
-     - returns: Disposable object that can be used to unsubscribe the observer.
+     - parameter to: 接收事件的观察者。
+     - returns: 可用于取消订阅观察者的一次性对象.
      */
     public func bind<O: ObserverType>(to observer: O) -> Disposable where O.E == E? {
+        // 这地方进行了类型推断？ 是 MAP.R = O.E
         return self.map { $0 }.subscribe(observer)
     }
 

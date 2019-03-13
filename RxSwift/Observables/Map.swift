@@ -9,12 +9,12 @@
 extension ObservableType {
 
     /**
-     Projects each element of an observable sequence into a new form.
+     将 Observable 序列的每个元素进行转换。
 
      - seealso: [map operator on reactivex.io](http://reactivex.io/documentation/operators/map.html)
 
-     - parameter transform: A transform function to apply to each source element.
-     - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
+     - parameter transform: 用于每个源元素转换的函数。
+     - returns: 一个可观察的序列，其元素是源元素调转换后结果。
 
      */
     public func map<R>(_ transform: @escaping (E) throws -> R)

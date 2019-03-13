@@ -9,16 +9,16 @@
  */
 import RxSwift
 /*:
-# Transforming Operators
-Operators that transform Next event elements emitted by an `Observable` sequence.
-## `map`
+ # Transforming Operators
+ Operators that transform Next event elements emitted by an `Observable` sequence.
+ ## `map`
  Applies a transforming closure to elements emitted by an `Observable` sequence, and returns a new `Observable` sequence of the transformed elements. [More info](http://reactivex.io/documentation/operators/map.html)
-![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/map.png)
-*/
+ ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/map.png)
+ */
 example("map") {
     let disposeBag = DisposeBag()
-    Observable.of(1, 2, 3)
-        .map { $0 * $0 }
+    Observable.of(1, 2, 3, nil, 4)
+        .map { $0 }
         .subscribe(onNext: { print($0) })
         .disposed(by: disposeBag)
 }

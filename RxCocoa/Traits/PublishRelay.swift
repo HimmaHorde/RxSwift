@@ -8,9 +8,9 @@
 
 import RxSwift
 
-/// PublishRelay is a wrapper for `PublishSubject`.
+/// 包装 `PublishSubject`
 ///
-/// Unlike `PublishSubject` it can't terminate with error or completed.
+/// 不响应 error or completed
 public final class PublishRelay<Element>: ObservableType {
     public typealias E = Element
 

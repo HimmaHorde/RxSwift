@@ -6,6 +6,7 @@
  1. Show the Debug Area (**View** → **Debug Area** → **Show Debug Area**).
  */
 import RxSwift
+import RxCocoa
 /*:
  # Try Yourself
  
@@ -13,54 +14,51 @@ import RxSwift
  */
 playgroundShouldContinueIndefinitely()
 
-//example("Try yourself") {
-//
-//}
+// shareReplay
 
-typealias AAA = (String)->()
+//let aaa: Observable<String> = Observable.create { (obsver) -> Disposable in
+//    delay(0, closure: {
+//        obsver.onNext("hello")
+//    })
+//    print("aaaa")
+//    return Disposables.create()
+//}.share()
 
-class Person {
-    var name: String?
-    var age: Int?
-    var friend: Person?
+let aaa: Observable<String>
+    = Observable<Int>
+        .timer(2, period: 1, scheduler: MainScheduler.instance)
+        .map { "当前索引 = \($0)" }
+        .share()
 
-    init(name:String, age:Int) {
-        self.name = name
-        self.age = age
-    }
-
-    func show(_ other: String){
-        print(" + \(other)")
-    }
-    deinit {
-        print("\(name!) dealloc")
+let ob1:AnyObserver<String> = AnyObserver.init { (e) in
+    switch e {
+    case .next(let aaa):
+        print("11\(aaa)");
+    default:
+        break
     }
 }
 
-class KK {
-    var name: String?
-    weak var ac: AAA?
-}
-//var ac:AAA?
-
-let k = KK.init()
-k.name = "KK"
-
-func test() {
-    var p = Person.init(name: "山", age: 19)
-    k.ac = p.show
+let ob2:AnyObserver<String> = AnyObserver.init { (e) in
+    switch e {
+    case .next(let aaa):
+        print("22\(aaa)");
+    default:
+        break
+    }
 }
 
-test()
-print("66666")
-//k.ac = nil
+aaa.bind(to: ob1)
+
+delay(3) {
+    aaa.bind(to: ob2)
+}
 
 
 
 
 
-// 设置为 nil 之前 person 对象未被释放
-//ac = nil
+
 
 
 
