@@ -28,7 +28,7 @@ let aaa: Observable<String>
     = Observable<Int>
         .timer(2, period: 1, scheduler: MainScheduler.instance)
         .map { "当前索引 = \($0)" }
-        .share()
+        .share(replay: 2, scope: .whileConnected)
 
 let ob1:AnyObserver<String> = AnyObserver.init { (e) in
     switch e {
@@ -48,10 +48,23 @@ let ob2:AnyObserver<String> = AnyObserver.init { (e) in
     }
 }
 
+let ob3:AnyObserver<String> = AnyObserver.init { (e) in
+    switch e {
+    case .next(let aaa):
+        print("33\(aaa)");
+    default:
+        break
+    }
+}
+
 aaa.bind(to: ob1)
 
-delay(3) {
+delay(5) {
     aaa.bind(to: ob2)
+}
+
+delay(8) {
+    aaa.bind(to: ob3)
 }
 
 

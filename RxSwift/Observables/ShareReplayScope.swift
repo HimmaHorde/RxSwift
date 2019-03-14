@@ -170,6 +170,7 @@ fileprivate final class ShareReplay1WhileConnectedConnection<Element>
     private let _lock: RecursiveLock
     private var _disposed: Bool = false
     fileprivate var _observers = Observers()
+    /// 缓存的元素（单个）
     fileprivate var _element: Element?
 
     init(parent: Parent, lock: RecursiveLock) {
@@ -208,6 +209,7 @@ fileprivate final class ShareReplay1WhileConnectedConnection<Element>
         self._subscription.setDisposable(self._parent._source.subscribe(self))
     }
 
+    // 同步订阅，线程安全。
     final func _synchronized_subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == Element {
         self._lock.lock(); defer { self._lock.unlock() }
         if let element = self._element {
@@ -258,7 +260,7 @@ fileprivate final class ShareReplay1WhileConnectedConnection<Element>
     #endif
 }
 
-// optimized version of share replay for most common case
+// 共享重播最常见的情况
 final private class ShareReplay1WhileConnected<Element>
     : Observable<Element> {
 
@@ -283,7 +285,8 @@ final private class ShareReplay1WhileConnected<Element>
         let disposable = connection._synchronized_subscribe(observer)
 
         self._lock.unlock()
-        
+
+        // 第一次调用 subscribe 时，count 为 0
         if count == 0 {
             connection.connect()
         }
@@ -291,10 +294,16 @@ final private class ShareReplay1WhileConnected<Element>
         return disposable
     }
 
+
+    /// 初始化 _connection
+    ///
+    /// - Parameter observer: 观察者对象
+    /// - Returns: 返回不为空的 _connection
     @inline(__always)
     private func _synchronized_subscribe<O : ObserverType>(_ observer: O) -> Connection where O.E == E {
         let connection: Connection
 
+        // 判断是否存在 _connection , 没有就创建
         if let existingConnection = self._connection {
             connection = existingConnection
         }
@@ -333,6 +342,9 @@ fileprivate final class ShareWhileConnectedConnection<Element>
         #endif
     }
 
+    /// 处理传入事件
+    ///
+    /// - Parameter event: source Obsverable
     final func on(_ event: Event<E>) {
         self._lock.lock()
         let observers = self._synchronized_on(event)
@@ -340,6 +352,7 @@ fileprivate final class ShareWhileConnectedConnection<Element>
         dispatch(observers, event)
     }
 
+    /// 获取用于执行指定事件的有效 Observers
     final private func _synchronized_on(_ event: Event<E>) -> Observers {
         if self._disposed {
             return Observers()
@@ -355,10 +368,17 @@ fileprivate final class ShareWhileConnectedConnection<Element>
         }
     }
 
+    /// 订阅 _sourceObservable 对象
+    ///
+    ///     self._parent._source.subscribe(self)
     final func connect() {
         self._subscription.setDisposable(self._parent._source.subscribe(self))
     }
 
+    /// 同步订阅，并将缓存的元素发送给观察者。
+    ///
+    /// - Parameter observer: 观察者
+    /// - Returns: Disposable
     final func _synchronized_subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == Element {
         self._lock.lock(); defer { self._lock.unlock() }
 
@@ -367,6 +387,7 @@ fileprivate final class ShareWhileConnectedConnection<Element>
         return SubscriptionDisposable(owner: self, key: disposeKey)
     }
 
+    /// 释放资源
     final private func _synchronized_dispose() {
         self._disposed = true
         if self._parent._connection === self {
