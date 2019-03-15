@@ -375,7 +375,7 @@ fileprivate final class ShareWhileConnectedConnection<Element>
         self._subscription.setDisposable(self._parent._source.subscribe(self))
     }
 
-    /// 同步订阅，并将缓存的元素发送给观察者。
+    /// 同步订阅
     ///
     /// - Parameter observer: 观察者
     /// - Returns: Disposable

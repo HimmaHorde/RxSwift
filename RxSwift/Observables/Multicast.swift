@@ -7,14 +7,14 @@
 //
 
 /**
- Represents an observable wrapper that can be connected and disconnected from its underlying observable sequence.
+ 对可观察序列进行包装，该包装器可以与其底层可观察序列连接或断开连接。
  */
 public class ConnectableObservable<Element>
     : Observable<Element>
     , ConnectableObservableType {
 
     /**
-     Connects the observable wrapper to its source. All subscribed observers will receive values from the underlying observable sequence as long as the connection is established.
+     将可观察包装器连接到它的源。只要建立了连接，所有订阅的观察者都将接收来自底层可观察序列的值。
 
      - returns: Disposable used to disconnect the observable wrapper from its source, causing subscribed observer to stop receiving values from the underlying observable sequence.
      */
@@ -51,13 +51,13 @@ extension ObservableType {
 extension ObservableType {
 
     /**
-    Returns a connectable observable sequence that shares a single subscription to the underlying sequence.
+     返回一个可连接的可观察序列，对观察者共享同一个订阅源
 
-    This operator is a specialization of `multicast` using a `PublishSubject`.
+     相当于 `PublishSubject` 对象加上一个可连接控制(.connect()方法)。
 
     - seealso: [publish operator on reactivex.io](http://reactivex.io/documentation/operators/publish.html)
 
-    - returns: A connectable observable sequence that shares a single subscription to the underlying sequence.
+    - returns: 可连接的可观察序列
     */
     public func publish() -> ConnectableObservable<E> {
         return self.multicast { PublishSubject() }
@@ -67,13 +67,13 @@ extension ObservableType {
 extension ObservableType {
 
     /**
-     Returns a connectable observable sequence that shares a single subscription to the underlying sequence replaying bufferSize elements.
+     返回一个可连接的可观察序列，对观察者共享同一个序列源和缓存
 
-     This operator is a specialization of `multicast` using a `ReplaySubject`.
+     相当于 `ReplaySubject` 对象加上一个可连接控制(.connect()方法)。
 
      - seealso: [replay operator on reactivex.io](http://reactivex.io/documentation/operators/replay.html)
 
-     - parameter bufferSize: Maximum element count of the replay buffer.
+     - parameter bufferSize: 重播缓冲区的最大元素数。
      - returns: A connectable observable sequence that shares a single subscription to the underlying sequence.
      */
     public func replay(_ bufferSize: Int)
@@ -113,7 +113,8 @@ extension ConnectableObservableType {
 extension ObservableType {
 
     /**
-     Multicasts the source sequence notifications through the specified subject to the resulting connectable observable.
+     multicast 方法将一个正常的序列转换成一个可连接的序列。
+     同时 multicast 方法还可以传入一个 Subject，每当序列发送事件时都会触发这个 Subject 的发送。
 
      Upon connection of the connectable observable, the subject is subscribed to the source exactly one, and messages are forwarded to the observers registered with the connectable observable.
 
@@ -130,7 +131,8 @@ extension ObservableType {
     }
 
     /**
-     Multicasts the source sequence notifications through an instantiated subject to the resulting connectable observable.
+     multicast 方法将一个正常的序列转换成一个可连接的序列。
+     同时 multicast 方法还可以传入一个 Subject，每当序列发送事件时都会触发这个 Subject 的发送。
 
      Upon connection of the connectable observable, the subject is subscribed to the source exactly one, and messages are forwarded to the observers registered with the connectable observable.
 
@@ -147,6 +149,7 @@ extension ObservableType {
     }
 }
 
+/// on 事件调用 subject.on
 final private class Connection<S: SubjectType>: ObserverType, Disposable {
     typealias E = S.SubjectObserverType.E
 
@@ -158,6 +161,8 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
 
     private var _disposed = AtomicInt(0)
 
+
+    /// 传入 connect 适配器，subject 的 观察者
     init(parent: ConnectableObservableAdapter<S>, subjectObserver: S.SubjectObserverType, lock: RecursiveLock, subscription: Disposable) {
         self._parent = parent
         self._subscription = subscription
@@ -165,6 +170,7 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
         self._subjectObserver = subjectObserver
     }
 
+    /// 调用 subject.on
     func on(_ event: Event<S.SubjectObserverType.E>) {
         if isFlagSet(&self._disposed, 1) {
             return
@@ -194,6 +200,8 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
     }
 }
 
+/// 可连接序列适配器
+/// > 实现 connect 方法
 final private class ConnectableObservableAdapter<S: SubjectType>
     : ConnectableObservable<S.E> {
     typealias ConnectionType = Connection<S>
@@ -207,6 +215,11 @@ final private class ConnectableObservableAdapter<S: SubjectType>
     // state
     fileprivate var _connection: ConnectionType?
 
+    /// 初始化，此时未生成 subject 对象和 connection 对象
+    ///
+    /// - Parameters:
+    ///   - source: 可观察序列
+    ///   - makeSubject: 生成 subject 的闭包
     init(source: Observable<S.SubjectObserverType.E>, makeSubject: @escaping () -> S) {
         self._source = source
         self._makeSubject = makeSubject
@@ -214,6 +227,11 @@ final private class ConnectableObservableAdapter<S: SubjectType>
         self._connection = nil
     }
 
+    /// 如果 connection 对象存在，直接返回对象。立刻创建，并使用此对象订阅源可订阅序列。
+    ///
+    /// connection，本身是观察者，也是资管管理者。
+    /// 此方法被调用时源序列猜真正被订阅，订阅者是 subject.asObserver()。
+    /// - Returns: connection 对象
     override func connect() -> Disposable {
         return self._lock.calculateLocked {
             if let connection = self._connection {
@@ -229,6 +247,7 @@ final private class ConnectableObservableAdapter<S: SubjectType>
         }
     }
 
+    /// 返回 subject 对象，如果不存在生成 subject 对象。
     fileprivate var lazySubject: S {
         if let subject = self._subject {
             return subject
@@ -239,6 +258,8 @@ final private class ConnectableObservableAdapter<S: SubjectType>
         return subject
     }
 
+
+    /// 调用 subject.subscribe
     override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == S.E {
         return self.lazySubject.subscribe(observer)
     }
@@ -324,6 +345,8 @@ final private class RefCountSink<CO: ConnectableObservableType, O: ObserverType>
     }
 }
 
+
+/// 可连接序列降级为普通序列
 final private class RefCount<CO: ConnectableObservableType>: Producer<CO.E> {
     fileprivate let _lock = RecursiveLock()
 
@@ -387,6 +410,7 @@ final private class MulticastSink<S: SubjectType, O: ObserverType>: Sink<O>, Obs
 }
 
 final private class Multicast<S: SubjectType, R>: Producer<R> {
+    /// Subject 生成类
     typealias SubjectSelectorType = () throws -> S
     typealias SelectorType = (Observable<S.E>) throws -> Observable<R>
 

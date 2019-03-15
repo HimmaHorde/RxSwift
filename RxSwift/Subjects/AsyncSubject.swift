@@ -6,10 +6,10 @@
 //  Copyright © 2017 Krunoslav Zaher. All rights reserved.
 //
 
-/// An AsyncSubject emits the last value (and only the last value) emitted by the source Observable,
-/// and only after that source Observable completes.
+/// AsyncSubject只发送由源Observable发送的最后一个事件，并且只在源Observable完成之后。
 ///
-/// (If the source Observable does not emit any values, the AsyncSubject also completes without emitting any values.)
+/// 如果源Observable没有发送任何值，AsyncSubject也不会发送任何值。
+/// > AsyncSubject会发送相同的值给所有observer。但是，如果源Observable被一个error中断了发送，AsyncSubject不会发送任何事件，而是会发送从源Observable传来的error提示。
 public final class AsyncSubject<Element>
     : Observable<Element>
     , SubjectType
