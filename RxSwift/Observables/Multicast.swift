@@ -159,7 +159,7 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
     private var _subscription : Disposable?
     private var _subjectObserver: S.SubjectObserverType
 
-    private var _disposed = AtomicInt(0)
+    private let _disposed = AtomicInt(0)
 
 
     /// 传入 connect 适配器，subject 的 观察者
@@ -172,7 +172,7 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
 
     /// 调用 subject.on
     func on(_ event: Event<S.SubjectObserverType.E>) {
-        if isFlagSet(&self._disposed, 1) {
+        if isFlagSet(self._disposed, 1) {
             return
         }
         if event.isStopEvent {
@@ -183,7 +183,7 @@ final private class Connection<S: SubjectType>: ObserverType, Disposable {
 
     func dispose() {
         _lock.lock(); defer { _lock.unlock() } // {
-        fetchOr(&self._disposed, 1)
+        fetchOr(self._disposed, 1)
         guard let parent = _parent else {
             return
         }

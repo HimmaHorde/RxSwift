@@ -57,14 +57,13 @@ fileprivate final class SinkDisposer: Cancelable {
         case sinkAndSubscriptionSet = 2
     }
 
-
     /// 0：初始状态, 2：设置接收器和订阅，3：已释放 ，1：未 set 调用了释放，要求 set 时立即释放。
-    private var _state = AtomicInt(0)
+    private let _state = AtomicInt(0)
     private var _sink: Disposable?
     private var _subscription: Disposable?
 
     var isDisposed: Bool {
-        return isFlagSet(&self._state, DisposeState.disposed.rawValue)
+        return isFlagSet(self._state, DisposeState.disposed.rawValue)
     }
 
     func setSinkAndSubscription(sink: Disposable, subscription: Disposable) {
@@ -75,7 +74,7 @@ fileprivate final class SinkDisposer: Cancelable {
         // _state = 2 -> _state = 2, previousState = 2
         // _state = 3 -> _state = 3, previousState = 3
         // _state 值变为 2 ，表示已设置 Sink 和 Subscription
-        let previousState = fetchOr(&self._state, DisposeState.sinkAndSubscriptionSet.rawValue)
+        let previousState = fetchOr(self._state, DisposeState.sinkAndSubscriptionSet.rawValue)
 
         // 0 & 2 = 0
         // 2 & 2 = 2
@@ -100,7 +99,7 @@ fileprivate final class SinkDisposer: Cancelable {
         // 未设置 sink ，_state = 0 -> 1
         // 正常 set 之后，_state = 2 -> 3
         // 释放之后 _state = 3
-        let previousState = fetchOr(&self._state, DisposeState.disposed.rawValue)
+        let previousState = fetchOr(self._state, DisposeState.disposed.rawValue)
 
         // previousState = 2 ,previousState = 0 可跳过此判断。
         // 只要之前未执行过 dispose() 就可以继续往下走。
