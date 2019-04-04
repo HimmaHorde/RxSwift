@@ -8,7 +8,7 @@
 
 extension ObservableType {
     /**
-     Convert any Observable into an Observable of its events.
+     操作符：可以将序列产生的事件，转换成元素。
      - seealso: [materialize operator on reactivex.io](http://reactivex.io/documentation/operators/materialize-dematerialize.html)
      - returns: An observable sequence that wraps events in an Event<E>. The returned Observable never errors, but it does complete after observing all of the events of the underlying Observable.
      */

@@ -9,11 +9,11 @@
 import RxSwift
 
 /**
- Trait that represents observable sequence with following properties:
+ 表示具有以下属性的可观察特征序列:
 
- - it never fails
- - it delivers events on `MainScheduler.instance`
- - `share(replay: 1, scope: .whileConnected)` sharing strategy
+ - 不会产生 error 事件
+ - 在主线程监听 `MainScheduler.instance`
+ - `share(replay: 1, scope: .whileConnected)` 共享状态变化
  
  Additional explanation:
  - all observers share sequence computation resources

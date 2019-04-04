@@ -10,9 +10,9 @@
 import Foundation
 #endif
 
-/// Sequence containing exactly 1 element
+/// 恰好包含一个元素的序列
 public enum SingleTrait { }
-/// Represents a push style sequence containing 1 element.
+/// 只能发出一个元素或者或者 error 事件。传入 complete 事件会导致报错(fatalError).
 public typealias Single<Element> = PrimitiveSequence<SingleTrait, Element>
 
 public enum SingleEvent<Element> {

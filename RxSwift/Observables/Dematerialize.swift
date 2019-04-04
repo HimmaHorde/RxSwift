@@ -8,7 +8,7 @@
 
 extension ObservableType where E: EventConvertible {
     /**
-     Convert any previously materialized Observable into it's original form.
+     操作符：将 materialize 生成事件元素转换为普通元素
      - seealso: [materialize operator on reactivex.io](http://reactivex.io/documentation/operators/materialize-dematerialize.html)
      - returns: The dematerialized observable sequence.
      */

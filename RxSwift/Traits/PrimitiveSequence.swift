@@ -6,7 +6,10 @@
 //  Copyright © 2017 Krunoslav Zaher. All rights reserved.
 //
 
-/// Observable sequences containing 0 or 1 element.
+/// 包含0或1个元素的可观察序列。
+///
+/// 特征序列 Single，Completable，Maybe 都是 PrimitiveSequence 的别名。
+/// 内部持有一个 Observable 对象
 public struct PrimitiveSequence<Trait, Element> {
     let source: Observable<Element>
 
@@ -15,11 +18,11 @@ public struct PrimitiveSequence<Trait, Element> {
     }
 }
 
-/// Observable sequences containing 0 or 1 element
+/// 包含0或1个元素的可观察序列的协议
 public protocol PrimitiveSequenceType {
     /// Additional constraints
     associatedtype TraitType
-    /// Sequence element type
+    /// 序列元素类型
     associatedtype ElementType
 
     // Converts `self` to primitive sequence.
@@ -46,7 +49,7 @@ extension PrimitiveSequence: ObservableConvertibleType {
     /// Type of elements in sequence.
     public typealias E = Element
 
-    /// Converts `self` to `Observable` sequence.
+    /// 将自身转换为 `Observable` 序列 (self.source)
     ///
     /// - returns: Observable sequence that represents `self`.
     public func asObservable() -> Observable<E> {
