@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -42,9 +42,11 @@ extension Target {
 
 let package = Package(
   name: "RxSwift",
+  platforms: [
+    .macOS(.v10_10), .iOS(.v8), .tvOS(.v9), .watchOS(.v3)
+  ],
   products: ([
     [
-      .library(name: "RxAtomic", targets: ["RxAtomic"]),
       .library(name: "RxSwift", targets: ["RxSwift"]),
       .library(name: "RxCocoa", targets: ["RxCocoa"]),
       .library(name: "RxBlocking", targets: ["RxBlocking"]),
@@ -54,15 +56,15 @@ let package = Package(
   ] as [[Product]]).flatMap { $0 },
   targets: ([
     [
-      .target(name: "RxAtomic", dependencies: []),
-      .target(name: "RxSwift", dependencies: ["RxAtomic"]),
+      .target(name: "RxSwift", dependencies: []),
     ], 
     Target.rxCocoa(),
     Target.rxCocoaRuntime(),
     [
-      .target(name: "RxBlocking", dependencies: ["RxSwift", "RxAtomic"]),
+      .target(name: "RxBlocking", dependencies: ["RxSwift"]),
       .target(name: "RxTest", dependencies: ["RxSwift"]),
     ],
     Target.allTests()
-  ] as [[Target]]).flatMap { $0 }
+  ] as [[Target]]).flatMap { $0 },
+  swiftLanguageVersions: [.v5]
 )

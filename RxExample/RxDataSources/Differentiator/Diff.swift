@@ -126,14 +126,17 @@ public enum Diff {
     //================================================================================
     // swift dictionary optimizations {
 
-    private struct OptimizedIdentity<E: Hashable> : Hashable {
+    private struct OptimizedIdentity<E: Hashable>: Hashable {
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(hash)
+        }
 
-        let hashValue: Int
+        let hash: Int
         let identity: UnsafePointer<E>
 
         init(_ identity: UnsafePointer<E>) {
             self.identity = identity
-            self.hashValue = identity.pointee.hashValue
+            self.hash = identity.pointee.hashValue
         }
 
         static func == (lhs: OptimizedIdentity<E>, rhs: OptimizedIdentity<E>) -> Bool {
