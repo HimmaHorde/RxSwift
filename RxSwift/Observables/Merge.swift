@@ -9,7 +9,7 @@
 extension ObservableType {
 
     /**
-     Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
+     将一个可观察序列的每个元素投射到一个可观察序列中，并将得到的可观察序列合并成一个可观察序列。
 
      - seealso: [flatMap operator on reactivex.io](http://reactivex.io/documentation/operators/flatmap.html)
 

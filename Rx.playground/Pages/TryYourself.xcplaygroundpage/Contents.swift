@@ -60,34 +60,47 @@ playgroundShouldContinueIndefinitely()
 //delay(8) {
 //    aaa.bind(to: ob3)
 //}
-let xs:Observable<TimeInterval> = Observable.create({ (obsver) -> Disposable in
-    print("重新执行了")
-    obsver.onNext(Date().timeIntervalSince1970)
-    delay(2, closure: {
-        obsver.onCompleted()
-    })
-    delay(4, closure: {
-        obsver.onNext(Date().timeIntervalSince1970)
-    })
-    delay(6, closure: {
-        obsver.onNext(Date().timeIntervalSince1970)
-    })
-    delay(8, closure: {
-        obsver.onCompleted()
-    })
-         return Disposables.create()
-    })
-//    .debug()
-    .share(replay: 0, scope: .forever)
 
-let a = xs.subscribe(onNext: { print("1 next \($0)") }, onCompleted: { print("1 completed\n") })
+//let xs:Observable<TimeInterval> = Observable.create({ (obsver) -> Disposable in
+//    print("重新执行了")
+//    obsver.onNext(Date().timeIntervalSince1970)
+//    delay(2, closure: {
+//        obsver.onCompleted()
+//    })
+//    delay(4, closure: {
+//        obsver.onNext(Date().timeIntervalSince1970)
+//    })
+//    delay(6, closure: {
+//        obsver.onNext(Date().timeIntervalSince1970)
+//    })
+//    delay(8, closure: {
+//        obsver.onCompleted()
+//    })
+//         return Disposables.create()
+//    })
+////    .debug()
+//    .share(replay: 0, scope: .forever)
+//
+//let a = xs.subscribe(onNext: { print("1 next \($0)") }, onCompleted: { print("1 completed\n") })
+//
+//delay(3) {
+//    let b = xs.subscribe(onNext: { print("2 next \($0)") }, onCompleted: { print("2 completed\n") })
+//    let c = xs.subscribe(onNext: { print("3 next \($0)") }, onCompleted: { print("3 completed\n") })
+//}
 
-delay(3) {
-    let b = xs.subscribe(onNext: { print("2 next \($0)") }, onCompleted: { print("2 completed\n") })
-    let c = xs.subscribe(onNext: { print("3 next \($0)") }, onCompleted: { print("3 completed\n") })
+
+let o = Observable<Int>.from([1,2,3,4,5])
+let result = o.flatMap { num in
+    return Observable.just("\(num + 10)")
 }
 
+o.subscribe { (event) in
+    print(event)
+}
 
+result.subscribe { (e) in
+    print(e)
+}
 
 
 

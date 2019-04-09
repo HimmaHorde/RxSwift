@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// protocol:表示push样式序列,继承自 `ObservableConvertibleType`。
+/// 协议:定义了 subscribe 方法,继承自 `ObservableConvertibleType`。
 public protocol ObservableType : ObservableConvertibleType {
     /**
     传入观察者，接收序列的消息

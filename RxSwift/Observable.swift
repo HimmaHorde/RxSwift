@@ -37,7 +37,7 @@ public class Observable<Element> : ObservableType {
     // this is kind of ugly I know :(
     // Swift compiler reports "Not supported yet" when trying to override protocol extensions, so ¯\_(ツ)_/¯
 
-    /// map操作符的优化
+    /// map 操作符的优化
     internal func composeMap<R>(_ transform: @escaping (Element) throws -> R) -> Observable<R> {
         return _map(source: self, transform: transform)
     }
