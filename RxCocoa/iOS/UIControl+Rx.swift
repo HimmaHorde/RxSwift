@@ -66,6 +66,7 @@ extension Reactive where Base: UIControl {
                     return Disposables.create()
                 }
 
+                // 订阅时给定初始值
                 observer.on(.next(getter(control)))
 
                 let controlTarget = ControlTarget(control: control, controlEvents: editingEvents) { _ in

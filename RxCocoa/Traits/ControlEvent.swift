@@ -8,7 +8,7 @@
 
 import RxSwift
 
-/// A protocol that extends `ControlEvent`.
+/// 拓展 `ControlEvent` 的协议.
 public protocol ControlEventType : ObservableType {
 
     /// - returns: `ControlEvent` interface
@@ -16,15 +16,15 @@ public protocol ControlEventType : ObservableType {
 }
 
 /**
-    A trait for `Observable`/`ObservableType` that represents an event on a UI element.
+    ControlEvent 是专门用于描述 UI 所产生的事件特征可观察序列。
 
     Properties:
 
-    - it never fails,
-    - it doesn’t send any initial value on subscription,
-    - it `Complete`s the sequence when the control deallocates,
-    - it never errors out, and
-    - it delivers events on `MainScheduler.instance`.
+    - 不会失败,
+    - 它不会在订阅时发送任何初始值,
+    - 当控件释放时，结束序列,
+    - 不会产生 error 事件, and
+    - 在主线程 `MainScheduler.instance` 订阅监听。
 
     **The implementation of `ControlEvent` will ensure that sequence of events is being subscribed on main scheduler
      (`subscribeOn(ConcurrentMainScheduler.instance)` behavior).**

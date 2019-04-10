@@ -20,7 +20,10 @@ import RxSwift
     typealias Control = Cocoa.NSControl
 #endif
 
-// This should be only used from `MainScheduler`
+/// 为控件绑定对应事件的响应方法，本身遵守 Disposable 协议
+///
+///   - 仅能在主线程使用 `MainScheduler`。
+///   - dispose 会移除控件监听的事件，并释放资源。
 final class ControlTarget: RxTarget {
     typealias Callback = (Control) -> Void
 

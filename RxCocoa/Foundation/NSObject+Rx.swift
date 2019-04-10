@@ -527,6 +527,7 @@ extension Reactive where Base: AnyObject {
     /**
      Helper to make sure that `Observable` returned from `createCachedObservable` is only created once.
      This is important because there is only one `target` and `action` properties on `NSControl` or `UIBarButtonItem`.
+     > 类似于 get 方法已。存在直接返回对应 key 的值，否则创建 保存 并返回。
      */
     func lazyInstanceObservable<T: AnyObject>(_ key: UnsafeRawPointer, createCachedObservable: () -> T) -> T {
         if let value = objc_getAssociatedObject(self.base, key) {

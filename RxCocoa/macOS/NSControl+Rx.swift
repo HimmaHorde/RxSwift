@@ -16,24 +16,25 @@ private var rx_control_events_key: UInt8 = 0
 
 extension Reactive where Base: NSControl {
 
-    /// Reactive wrapper for control event.
+    /// 控件事件的包装器。
     public var controlEvent: ControlEvent<()> {
         MainScheduler.ensureRunningOnMainThread()
 
         let source = self.lazyInstanceObservable(&rx_control_events_key) { () -> Observable<Void> in
             Observable.create { [weak control = self.base] observer in
                 MainScheduler.ensureRunningOnMainThread()
-
+                // 控件不存在直接结束
                 guard let control = control else {
                     observer.on(.completed)
                     return Disposables.create()
                 }
 
-                let observer = ControlTarget(control: control) { _ in
+                // 改了下名字防止产生歧义，这地方将在控件的响应事件里面调用给定的闭包函数
+                let disposer = ControlTarget(control: control) { _ in
                     observer.on(.next(()))
                 }
                 
-                return observer
+                return disposer
             }
 			.takeUntil(self.deallocated)
 			.share()

@@ -47,7 +47,7 @@ public final class MainScheduler : SerialDispatchQueueScheduler {
         }
     }
 
-    /// In case this method is running on a background thread it will throw an exception.
+    /// 判断是否在主线程运行，后台线程会抛出错误。
     public class func ensureRunningOnMainThread(errorMessage: String? = nil) {
         #if !os(Linux) // isMainThread is not implemented in Linux Foundation
             guard Thread.isMainThread else {
