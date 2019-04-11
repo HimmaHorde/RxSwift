@@ -22,24 +22,26 @@ operator please use `ConcurrentMainScheduler` because it is more optimized for t
 */
 public final class MainScheduler : SerialDispatchQueueScheduler {
 
+    // 主队列
     private let _mainQueue: DispatchQueue
 
+    // 队列内任务的数量
     let numberEnqueued = AtomicInt(0)
 
-    /// Initializes new instance of `MainScheduler`.
+    /// 根据 `DispatchQueue.main` 生成 `MainScheduler` 实例。
     public init() {
         self._mainQueue = DispatchQueue.main
         super.init(serialQueue: self._mainQueue)
     }
 
-    /// Singleton instance of `MainScheduler`
+    /// `MainScheduler` 单例
     public static let instance = MainScheduler()
 
-    /// Singleton instance of `MainScheduler` that always schedules work asynchronously
-    /// and doesn't perform optimizations for calls scheduled from main queue.
+    /// `MainScheduler` 单例总是执行异步操作
+    /// 不优化主队列执行操作
     public static let asyncInstance = SerialDispatchQueueScheduler(serialQueue: DispatchQueue.main)
 
-    /// In case this method is called on a background thread it will throw an exception.
+    /// 判断是否在主线程运行，后台线程会抛出错误。
     public class func ensureExecutingOnScheduler(errorMessage: String? = nil) {
         if !DispatchQueue.isMain {
             rxFatalError(errorMessage ?? "Executing on background thread. Please use `MainScheduler.instance.schedule` to schedule work on main thread.")
@@ -55,9 +57,12 @@ public final class MainScheduler : SerialDispatchQueueScheduler {
         #endif
     }
 
+    // 将任务放入主队列并执行
     override func scheduleInternal<StateType>(_ state: StateType, action: @escaping (StateType) -> Disposable) -> Disposable {
+        // 队列任务数量 + 1
         let previousNumberEnqueued = increment(self.numberEnqueued)
 
+        // 如果之前无任务，直接执行 action 并结束
         if DispatchQueue.isMain && previousNumberEnqueued == 0 {
             let disposable = action(state)
             decrement(self.numberEnqueued)

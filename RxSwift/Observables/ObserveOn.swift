@@ -164,6 +164,8 @@ final private class ObserveOnSink<O: ObserverType>: ObserverBase<O.E> {
     }
 #endif
 
+
+/// 观察者：内部包装一个观察者
 final private class ObserveOnSerialDispatchQueueSink<O: ObserverType>: ObserverBase<O.E> {
     let scheduler: SerialDispatchQueueScheduler
     let observer: O

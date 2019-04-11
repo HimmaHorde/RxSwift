@@ -7,9 +7,14 @@
 //
 
 /**
-Represents a disposable resource which only allows a single assignment of its underlying disposable resource.
+表示一个 disposable 实例，只允许对其底层的 disposable 资源处理一次，如果其底层 disposable 资源已存在，再次设置会报错。
 
-If an underlying disposable resource has already been set, future attempts to set the underlying disposable resource will throw an exception.
+ - 如果其底层 disposable 资源已存在，再次设置会报错。
+ - 只允许对其底层的 disposable 资源处理一次
+
+ 大白话：
+
+ 源 disposable 对象外面包了一层，只可以执行一次有效的dispose()方法。
 */
 public final class SingleAssignmentDisposable : DisposeBase, Cancelable {
 
@@ -22,7 +27,7 @@ public final class SingleAssignmentDisposable : DisposeBase, Cancelable {
     private let _state = AtomicInt(0)
     private var _disposable = nil as Disposable?
 
-    /// - returns: 表示资源是否已被释放
+    /// - returns: 表示是否已处理
     public var isDisposed: Bool {
         return isFlagSet(self._state, DisposeState.disposed.rawValue)
     }
@@ -32,25 +37,27 @@ public final class SingleAssignmentDisposable : DisposeBase, Cancelable {
         super.init()
     }
 
-    /// Gets or sets the underlying disposable. After disposal, the result of getting this property is undefined.
+    /// 设置底层的 Disposable 对象
     ///
-    /// **Throws exception if the `SingleAssignmentDisposable` has already been assigned to.**
+    /// **重复设置报错**
     public func setDisposable(_ disposable: Disposable) {
         self._disposable = disposable
 
         let previousState = fetchOr(self._state, DisposeState.disposableSet.rawValue)
 
+        // 重复设置
         if (previousState & DisposeState.disposableSet.rawValue) != 0 {
             rxFatalError("oldState.disposable != nil")
         }
 
+        // 未设置之前已调用 dispose 直接处理
         if (previousState & DisposeState.disposed.rawValue) != 0 {
             disposable.dispose()
             self._disposable = nil
         }
     }
 
-    /// Disposes the underlying disposable.
+    /// 调用底层的 Disposable 资源处理，并释放底层 Disposable 对象。
     public func dispose() {
         let previousState = fetchOr(self._state, DisposeState.disposed.rawValue)
 

@@ -7,7 +7,7 @@
 //
 
 /**
-Data structure that represents queue.
+表示队列的数据结构。
 
 Complexity of `enqueue`, `dequeue` is O(1) when number of operations is
 averaged over N operations.

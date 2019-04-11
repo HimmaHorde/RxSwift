@@ -37,15 +37,15 @@ import Dispatch
     }
 #endif
 
-/// Represents an object that schedules units of work on the current thread.
+/// 它是一个串行调度器，表示当前执行工作的调度器。
 ///
-/// This is the default scheduler for operators that generate elements.
+/// 这是生成元素的操作符的默认调度程序。
 ///
 /// This scheduler is also sometimes called `trampoline scheduler`.
 public class CurrentThreadScheduler : ImmediateSchedulerType {
     typealias ScheduleQueue = RxMutableBox<Queue<ScheduledItemType>>
 
-    /// The singleton instance of the current thread scheduler.
+    /// 当前线程调度程序的单例实例。
     public static let instance = CurrentThreadScheduler()
 
     private static var isScheduleRequiredKey: pthread_key_t = { () -> pthread_key_t in
@@ -63,6 +63,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
         return UnsafeRawPointer(UnsafeMutablePointer<Int>.allocate(capacity: 1))
     }()
 
+    // 获取当前线程的 ScheduleQueue 值
     static var queue : ScheduleQueue? {
         get {
             return Thread.getThreadLocalStorageValueForKey(CurrentThreadSchedulerQueueKey.instance)
@@ -72,7 +73,8 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
         }
     }
 
-    /// 返回一个值，用来表示调用者是否必须调用 `schedule` 方法
+    /// 返回一个值，用来表示调用者是否必须调用 `schedule` 方法， 默认 YES
+    /// > 对于一个新的线程默认是需要调度的
     public static fileprivate(set) var isScheduleRequired: Bool {
         get {
             return pthread_getspecific(CurrentThreadScheduler.isScheduleRequiredKey) == nil
@@ -85,7 +87,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
     }
 
     /**
-    Schedules an action to be executed as soon as possible on current thread.
+    调度要在当前线程上尽快执行的操作。
 
     If this method is called on some thread that doesn't have `CurrentThreadScheduler` installed, scheduler will be
     automatically installed and uninstalled after all work is performed.
@@ -109,6 +111,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
                 return disposable
             }
 
+            // 串行执行队列中的方法
             while let latest = queue.value.dequeue() {
                 if latest.isDisposed {
                     continue
@@ -119,6 +122,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
             return disposable
         }
 
+        // 获取或生产自定队列 Queue
         let existingQueue = CurrentThreadScheduler.queue
 
         let queue: RxMutableBox<Queue<ScheduledItemType>>
@@ -130,6 +134,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
             CurrentThreadScheduler.queue = queue
         }
 
+        // 将需要执行的任务添加进队列
         let scheduledItem = ScheduledItem(action: action, state: state)
         queue.value.enqueue(scheduledItem)
 

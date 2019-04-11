@@ -31,7 +31,7 @@ final class RxMutableBox<T>: NSObject {
     }
 }
 #else
-/// Creates mutable reference wrapper for any type.
+/// 为任何类型创建可变引用包装器。
 final class RxMutableBox<T>: CustomDebugStringConvertible {
     /// Wrapped value
     var value: T
