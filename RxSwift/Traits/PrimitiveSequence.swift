@@ -20,7 +20,7 @@ public struct PrimitiveSequence<Trait, Element> {
 
 /// 包含0或1个元素的可观察序列的协议
 public protocol PrimitiveSequenceType {
-    /// Additional constraints
+    /// 用于判断特征
     associatedtype TraitType
     /// 序列元素类型
     associatedtype ElementType

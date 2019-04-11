@@ -12,7 +12,7 @@ private enum ScheduleState {
     case done
 }
 
-/// Type erased recursive scheduler.
+/// 类型擦除递归调度程序。
 final class AnyRecursiveScheduler<State> {
     
     typealias Action =  (State, AnyRecursiveScheduler<State>) -> Void

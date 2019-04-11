@@ -30,6 +30,58 @@
       </FileRef>
    </Group>
    <Group
+      location = "group:/Users/yanglin/Developer/GitHub/RxSwift/&#x6587;&#x6863;"
+      name = "&#x6587;&#x6863;">
+      <FileRef
+         location = "group:Examples.md">
+      </FileRef>
+      <FileRef
+         location = "group:HotAndColdObservables.md">
+      </FileRef>
+      <FileRef
+         location = "group:Subjects.md">
+      </FileRef>
+      <FileRef
+         location = "group:/Users/yanglin/Developer/GitHub/RxSwift/&#x6587;&#x6863;/&#x7279;&#x5f81;&#x300c;Traits&#x300d;.md">
+      </FileRef>
+      <FileRef
+         location = "group:Tips.md">
+      </FileRef>
+      <FileRef
+         location = "group:ComparisonWithOtherLibraries.md">
+      </FileRef>
+      <FileRef
+         location = "group:ExampleApp.md">
+      </FileRef>
+      <FileRef
+         location = "group:Playgrounds.md">
+      </FileRef>
+      <FileRef
+         location = "group:Schedulers.md">
+      </FileRef>
+      <FileRef
+         location = "group:NewFeatureRequestTemplate.md">
+      </FileRef>
+      <FileRef
+         location = "group:GettingStarted.md">
+      </FileRef>
+      <FileRef
+         location = "group:DesignRationale.md">
+      </FileRef>
+      <FileRef
+         location = "group:Why.md">
+      </FileRef>
+      <FileRef
+         location = "group:UnitTests.md">
+      </FileRef>
+      <FileRef
+         location = "group:MathBehindRx.md">
+      </FileRef>
+      <FileRef
+         location = "group:Warnings.md">
+      </FileRef>
+   </Group>
+   <Group
       location = "group:scripts"
       name = "scripts">
       <FileRef

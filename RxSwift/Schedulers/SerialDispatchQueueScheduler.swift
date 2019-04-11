@@ -11,6 +11,7 @@ import struct Foundation.Date
 import Dispatch
 
 /**
+串行队列调度
 Abstracts the work that needs to be performed on a specific `dispatch_queue_t`. It will make sure 
 that even if concurrent dispatch queue is passed, it's transformed into a serial one.
 
@@ -53,9 +54,9 @@ public class SerialDispatchQueueScheduler : SchedulerType {
     
     Additional dispatch queue properties can be set after dispatch queue is created using `serialQueueConfiguration`.
     
-    - parameter internalSerialQueueName: Name of internal serial dispatch queue.
+    - parameter internalSerialQueueName: 内部串行队列的名字
     - parameter serialQueueConfiguration: Additional configuration of internal serial dispatch queue.
-    - parameter leeway: The amount of time, in nanoseconds, that the system will defer the timer.
+    - parameter leeway: 精准度，系统延迟计时器的时间(以纳秒为单位)。
     */
     public convenience init(internalSerialQueueName: String, serialQueueConfiguration: ((DispatchQueue) -> Void)? = nil, leeway: DispatchTimeInterval = DispatchTimeInterval.nanoseconds(0)) {
         let queue = DispatchQueue(label: internalSerialQueueName, attributes: [])

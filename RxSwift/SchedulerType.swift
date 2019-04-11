@@ -9,19 +9,17 @@
 import struct Foundation.TimeInterval
 import struct Foundation.Date
 
-// Type that represents time interval in the context of RxSwift.
+// Rx的时间类型 秒 = Double
 public typealias RxTimeInterval = TimeInterval
 
-/// Type that represents absolute time in the context of RxSwift.
+/// Rx的日期类型 = Date
 public typealias RxTime = Date
 
-/// Represents an object that schedules units of work.
+/// 表示调度工作单元的对象
 public protocol SchedulerType: ImmediateSchedulerType {
 
-    /// - returns: Current time.
-    var now : RxTime {
-        get
-    }
+    /// 当前时间
+    var now : RxTime { get }
 
     /**
     Schedules an action to be executed.

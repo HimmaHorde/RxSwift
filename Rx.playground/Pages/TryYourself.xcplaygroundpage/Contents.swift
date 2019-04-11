@@ -101,6 +101,12 @@ o.subscribe { (event) in
 result.subscribe { (e) in
     print(e)
 }
+Maybe<String>.create { (maybe) in
+    maybe(.success("asdasd"))
+    return Disposables.create {
+    }
+}
+
 
 
 

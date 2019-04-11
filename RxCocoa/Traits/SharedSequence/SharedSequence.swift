@@ -9,11 +9,11 @@
 import RxSwift
 
 /**
-    Trait that represents observable sequence that shares computation resources with following properties:
+    表示共享计算资源的可观察序列的特征，具有以下属性:
 
-    - it never fails
-    - it delivers events on `SharingStrategy.scheduler`
-    - sharing strategy is customizable using `SharingStrategy.share` behavior
+    - 不会失败
+    - 在给定 `SharingStrategy.scheduler` 上生成事件
+    - 共享策略使用自定义的 `SharingStrategy.share` 
 
     `SharedSequence<Element>` can be considered a builder pattern for observable sequences that share computation resources.
 

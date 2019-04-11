@@ -9,15 +9,24 @@
 import Dispatch
 import struct Foundation.TimeInterval
 
+
+
+/// 队列配置(包含DispatchQueue队列对象，和时间)
 struct DispatchQueueConfiguration {
     let queue: DispatchQueue
     let leeway: DispatchTimeInterval
 }
 
+
+/// 时间单位转换，秒 转 DispatchTimeInterval
+///
+/// - Parameter interval:时间
+/// - Returns:转换后的时间
 private func dispatchInterval(_ interval: Foundation.TimeInterval) -> DispatchTimeInterval {
     precondition(interval >= 0.0)
     // TODO: Replace 1000 with something that actually works 
     // NSEC_PER_MSEC returns 1000000
+    // 毫秒 -> 转化为 DispatchTimeInterval
     return DispatchTimeInterval.milliseconds(Int(interval * 1000.0))
 }
 

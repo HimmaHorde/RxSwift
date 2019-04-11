@@ -9,17 +9,17 @@
 import RxSwift
 
 /**
- Trait that represents observable sequence with following properties:
+ 表示具有以下属性的可观察特征序列:
  
- - it never fails
- - it delivers events on `MainScheduler.instance`
+ - 不会失败
+ - 主线程驱动 `MainScheduler.instance`
  - `share(scope: .whileConnected)` sharing strategy
 
  Additional explanation:
- - all observers share sequence computation resources
- - there is no replaying of sequence elements on new observer subscription
- - computation of elements is reference counted with respect to the number of observers
- - if there are no subscribers, it will release sequence computation resources
+ - 所有观察者共享序列计算资源
+ - 不会为新的订阅者重播元素
+ - 元素的计算是参照观察者的数量来计算的
+ - 如果没有订阅者，它将释放序列计算资源
 
  In case trait that models state propagation is required, please check `Driver`.
 

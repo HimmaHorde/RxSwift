@@ -6,14 +6,14 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents an object that immediately schedules units of work.
+/// 协议：表示立即执行调度事件的对象
 public protocol ImmediateSchedulerType {
     /**
     立即执行 action 事件
     
-    - parameter state: State passed to the action to be executed.
-    - parameter action: Action to be executed.
-    - returns: The disposable object used to cancel the scheduled action (best effort).
+    - parameter state: 传递给要执行操作的状态。
+    - parameter action: 待执行的操作。
+    - returns: 用于取消操作的对象。
     */
     func schedule<StateType>(_ state: StateType, action: @escaping (StateType) -> Disposable) -> Disposable
 }

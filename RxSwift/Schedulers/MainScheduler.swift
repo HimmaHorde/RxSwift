@@ -12,11 +12,10 @@ import Dispatch
 #endif
 
 /**
-Abstracts work that needs to be performed on `DispatchQueue.main`. In case `schedule` methods are called from `DispatchQueue.main`, it will perform action immediately without scheduling.
+抽象需要在主队列运行的`DispatchQueue.main`的工作. 如果调度使用主队列`DispatchQueue.main`，则立即执行。
 
-This scheduler is usually used to perform UI work.
-
-Main scheduler is a specialization of `SerialDispatchQueueScheduler`.
+ - 这个调度程序通常用于执行 UI 相关任务。
+ - 主调度是一个特殊的串行队列调度`SerialDispatchQueueScheduler` .
 
 This scheduler is optimized for `observeOn` operator. To ensure observable sequence is subscribed on main thread using `subscribeOn`
 operator please use `ConcurrentMainScheduler` because it is more optimized for that purpose.

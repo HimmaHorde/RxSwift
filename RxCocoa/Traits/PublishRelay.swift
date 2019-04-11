@@ -10,7 +10,7 @@ import RxSwift
 
 /// 包装 `PublishSubject`
 ///
-/// 不响应 error or completed
+/// 不会产生 error or completed 事件
 public final class PublishRelay<Element>: ObservableType {
     public typealias E = Element
 
