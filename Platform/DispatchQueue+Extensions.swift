@@ -9,12 +9,14 @@
 import Dispatch
 
 extension DispatchQueue {
+    // key
     private static var token: DispatchSpecificKey<()> = {
         let key = DispatchSpecificKey<()>()
         DispatchQueue.main.setSpecific(key: key, value: ())
         return key
     }()
 
+    // 是否是主队列
     static var isMain: Bool {
         return DispatchQueue.getSpecific(key: token) != nil
     }

@@ -21,25 +21,27 @@ struct BagKey {
 }
 
 /**
-Data structure that represents a bag of elements typed `T`.
+存储对个 T 类型值的结构体
 
-Single element can be stored multiple times.
+ 单个元素可以存储多次。
 
-Time and space complexity of insertion and deletion is O(n). 
+ 插入和删除的时间和空间复杂度为O(n)。
 
-It is suitable for storing small number of elements.
+ 它适用于存储少量的元素。
 */
 struct Bag<T> : CustomDebugStringConvertible {
-    /// Type of identifier for inserted elements.
+    /// 插入元素的标识符的类型。
     typealias KeyType = BagKey
-    
+
+    // key-value 键值对
     typealias Entry = (key: BagKey, value: T)
- 
+
+    // 自增key值
     fileprivate var _nextKey: BagKey = BagKey(rawValue: 0)
 
     // data
 
-    // first fill inline variables
+    // 存入的第一个变量
     var _key0: BagKey?
     var _value0: T?
 
@@ -56,10 +58,10 @@ struct Bag<T> : CustomDebugStringConvertible {
     }
     
     /**
-    Inserts `value` into bag.
+    插入元素
     
-    - parameter element: Element to insert.
-    - returns: Key that can be used to remove element from bag.
+    - parameter element: 元素
+    - returns: 返回 Key，key可以用来从 bag 中删除对应的值
     */
     mutating func insert(_ element: T) -> BagKey {
         let key = _nextKey
@@ -74,16 +76,19 @@ struct Bag<T> : CustomDebugStringConvertible {
 
         _onlyFastPath = false
 
+        // 大于最大值之后保存在字典中
         if _dictionary != nil {
             _dictionary![key] = element
             return key
         }
 
+        // 低于最大值保存在数组中
         if _pairs.count < arrayDictionaryMaxSize {
             _pairs.append((key: key, value: element))
             return key
         }
-        
+
+        // 第一次赋值触发，初始化 _dictionary
         _dictionary = [key: element]
         
         return key
@@ -105,7 +110,7 @@ struct Bag<T> : CustomDebugStringConvertible {
     }
     
     /**
-    Removes element with a specific `key` from bag.
+    移除指定 key 相关的值
     
     - parameter key: Key that identifies element to remove from bag.
     - returns: Element that bag contained, or nil in case element was already removed.

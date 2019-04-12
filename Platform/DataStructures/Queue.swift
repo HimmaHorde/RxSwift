@@ -7,7 +7,7 @@
 //
 
 /**
-表示队列的数据结构。
+自定义队列
 
 Complexity of `enqueue`, `dequeue` is O(1) when number of operations is
 averaged over N operations.
