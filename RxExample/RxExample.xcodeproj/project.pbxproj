@@ -291,13 +291,6 @@
 			remoteGlobalIDString = C88FA4FD1C25C44800CCFEA4;
 			remoteInfo = "RxTest-iOS";
 		};
-		CC3CD204222E72880085492E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C81B39F11BC1C28400EF5A9F /* Rx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8165ABC21891AFF00494BEF;
-			remoteInfo = RxAtomic;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -574,7 +567,6 @@
 		C81B39F21BC1C28400EF5A9F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CC3CD205222E72880085492E /* RxAtomic.framework */,
 				C81B3A011BC1C28400EF5A9F /* RxSwift.framework */,
 				C81B3A091BC1C28400EF5A9F /* RxCocoa.framework */,
 				C81B3A111BC1C28400EF5A9F /* RxBlocking.framework */,
@@ -1201,13 +1193,6 @@
 			fileType = wrapper.framework;
 			path = RxTest.framework;
 			remoteRef = C8864C591C275A200073016D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CC3CD205222E72880085492E /* RxAtomic.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = RxAtomic.framework;
-			remoteRef = CC3CD204222E72880085492E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

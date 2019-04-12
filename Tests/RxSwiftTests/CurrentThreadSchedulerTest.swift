@@ -16,6 +16,12 @@ class CurrentThreadSchedulerTest : RxTest {
 extension CurrentThreadSchedulerTest {
     func testCurrentThreadScheduler_scheduleRequired() {
 
+        /*
+            isScheduleRequired 默认为 true
+            isScheduleRequired 有一个在任务在执行则值为 false
+            isScheduleRequired 所有任务完成 true
+         */
+
         XCTAssertTrue(CurrentThreadScheduler.isScheduleRequired)
 
         var executed = false
@@ -28,6 +34,7 @@ extension CurrentThreadSchedulerTest {
         XCTAssertTrue(executed)
     }
 
+    // 基本情况测试
     func testCurrentThreadScheduler_basicScenario() {
 
         XCTAssertTrue(CurrentThreadScheduler.isScheduleRequired)

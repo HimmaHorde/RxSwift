@@ -122,6 +122,8 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
             return disposable
         }
 
+        // 此部分代码触发条件：在第一个 action 内部调用了此方法
+
         // 获取或生产自定队列 Queue
         let existingQueue = CurrentThreadScheduler.queue
 

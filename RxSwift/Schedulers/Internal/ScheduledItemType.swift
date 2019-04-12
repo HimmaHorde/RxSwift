@@ -9,5 +9,6 @@
 protocol ScheduledItemType
     : Cancelable
     , InvocableType {
+    // 调用
     func invoke()
 }

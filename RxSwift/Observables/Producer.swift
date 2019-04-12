@@ -19,6 +19,8 @@ class Producer<Element> : Observable<Element> {
     /// - Parameter observer: 观察者/订阅者
     /// - Returns: 实现 Disposable 协议的对象
     override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
+        // 假如当前线程队列有任务，不加入队列直接执行
+        // 假如队列没有任务，加入队列
         if !CurrentThreadScheduler.isScheduleRequired {
             // 返回的一次性引用需要在处理后释放所有引用
             let disposer = SinkDisposer()
