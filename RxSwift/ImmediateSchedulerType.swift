@@ -20,7 +20,7 @@ public protocol ImmediateSchedulerType {
 
 extension ImmediateSchedulerType {
     /**
-    调度递归执行的操作
+    默认：立即执行操作(递归锁)
     
     - parameter state: State passed to the action to be executed.
     - parameter action: Action to execute recursively. The last parameter passed to the action is used to trigger recursive scheduling of the action, passing in recursive invocation state.

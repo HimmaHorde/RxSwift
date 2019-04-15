@@ -11,10 +11,9 @@ import struct Foundation.TimeInterval
 import Dispatch
 
 /**
-Abstracts work that needs to be performed on `MainThread`. In case `schedule` methods are called from main thread, it will perform action immediately without scheduling.
+主线程运行(为`subscribeOn` 设计)
 
-This scheduler is optimized for `subscribeOn` operator. If you want to observe observable sequence elements on main thread using `observeOn` operator,
-`MainScheduler` is more suitable for that purpose.
+ 这个调度程序是为`subscribeOn`操作符优化的。`observeOn` 使用 `MainScheduler`
 */
 public final class ConcurrentMainScheduler : SchedulerType {
     public typealias TimeInterval = Foundation.TimeInterval

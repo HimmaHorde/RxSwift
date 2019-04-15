@@ -22,7 +22,7 @@ public protocol SchedulerType: ImmediateSchedulerType {
     var now : RxTime { get }
 
     /**
-    Schedules an action to be executed.
+    延迟调度要执行的操作。
     
     - parameter state: State passed to the action to be executed.
     - parameter dueTime: Relative time after which to execute the action.
@@ -32,7 +32,7 @@ public protocol SchedulerType: ImmediateSchedulerType {
     func scheduleRelative<StateType>(_ state: StateType, dueTime: RxTimeInterval, action: @escaping (StateType) -> Disposable) -> Disposable
  
     /**
-    Schedules a periodic piece of work.
+    调度要定时执行的操作。
     
     - parameter state: State passed to the action to be executed.
     - parameter startAfter: Period after which initial work should be run.
@@ -46,7 +46,7 @@ public protocol SchedulerType: ImmediateSchedulerType {
 extension SchedulerType {
 
     /**
-    Periodic task will be emulated using recursive scheduling.
+    使用递归调度模拟周期性任务。
 
     - parameter state: Initial state passed to the action upon the first iteration.
     - parameter startAfter: Period after which initial work should be run.
@@ -59,6 +59,7 @@ extension SchedulerType {
         return schedule.start()
     }
 
+    /// 默认：递归锁操作
     func scheduleRecursive<State>(_ state: State, dueTime: RxTimeInterval, action: @escaping (State, AnyRecursiveScheduler<State>) -> Void) -> Disposable {
         let scheduler = AnyRecursiveScheduler(scheduler: self, action: action)
          

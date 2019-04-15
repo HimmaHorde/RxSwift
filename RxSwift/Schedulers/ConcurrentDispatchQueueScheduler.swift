@@ -10,9 +10,9 @@ import struct Foundation.Date
 import struct Foundation.TimeInterval
 import Dispatch
 
-/// Abstracts the work that needs to be performed on a specific `dispatch_queue_t`. You can also pass a serial dispatch queue, it shouldn't cause any problems.
+/// 抽象指定队列`dispatch_queue_t`上执行的任务，你也可以传递一个串行队列，它应该不会造成任何问题。
 ///
-/// This scheduler is suitable when some work needs to be performed in background.
+/// 当需要在后台执行某些任务时，这个调度器是最合适的。
 public class ConcurrentDispatchQueueScheduler: SchedulerType {
     public typealias TimeInterval = Foundation.TimeInterval
     public typealias Time = Date
@@ -23,18 +23,18 @@ public class ConcurrentDispatchQueueScheduler: SchedulerType {
 
     let configuration: DispatchQueueConfiguration
     
-    /// Constructs new `ConcurrentDispatchQueueScheduler` that wraps `queue`.
+    /// 构造新的`ConcurrentDispatchQueueScheduler`，它包装了`DispatchQueue`。
     ///
-    /// - parameter queue: Target dispatch queue.
-    /// - parameter leeway: The amount of time, in nanoseconds, that the system will defer the timer.
+    /// - parameter queue: 目标调度队列。
+    /// - parameter leeway: 系统延迟计时器的时间(以纳秒为单位)。
     public init(queue: DispatchQueue, leeway: DispatchTimeInterval = DispatchTimeInterval.nanoseconds(0)) {
         self.configuration = DispatchQueueConfiguration(queue: queue, leeway: leeway)
     }
     
-    /// Convenience init for scheduler that wraps one of the global concurrent dispatch queues.
+    /// 快速初始化方法，其中封装了一个全局并发调度队列。
     ///
-    /// - parameter qos: Target global dispatch queue, by quality of service class.
-    /// - parameter leeway: The amount of time, in nanoseconds, that the system will defer the timer.
+    /// - parameter qos: 目标全局调度队列，按指定的优先级创建。
+    /// - parameter leeway: 系统延迟计时器的时间(以纳秒为单位)。
     @available(iOS 8, OSX 10.10, *)
     public convenience init(qos: DispatchQoS, leeway: DispatchTimeInterval = DispatchTimeInterval.nanoseconds(0)) {
         self.init(queue: DispatchQueue(
@@ -47,7 +47,7 @@ public class ConcurrentDispatchQueueScheduler: SchedulerType {
     }
 
     /**
-    Schedules an action to be executed immediately.
+    调度要立即执行的操作。
     
     - parameter state: State passed to the action to be executed.
     - parameter action: Action to be executed.
@@ -58,7 +58,7 @@ public class ConcurrentDispatchQueueScheduler: SchedulerType {
     }
     
     /**
-    Schedules an action to be executed.
+    调度延迟执行的操作。
     
     - parameter state: State passed to the action to be executed.
     - parameter dueTime: Relative time after which to execute the action.
@@ -70,7 +70,7 @@ public class ConcurrentDispatchQueueScheduler: SchedulerType {
     }
     
     /**
-    Schedules a periodic piece of work.
+    定时执行任务。
     
     - parameter state: State passed to the action to be executed.
     - parameter startAfter: Period after which initial work should be run.

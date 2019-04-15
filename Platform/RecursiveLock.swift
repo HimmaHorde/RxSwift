@@ -9,6 +9,7 @@
 import class Foundation.NSRecursiveLock
 
 #if TRACE_RESOURCES
+    /// 它可以允许同一线程多次加锁，而不会造成死锁。
     class RecursiveLock: NSRecursiveLock {
         override init() {
             _ = Resources.incrementTotal()
@@ -30,5 +31,6 @@ import class Foundation.NSRecursiveLock
         }
     }
 #else
+    /// 它可以允许同一线程多次加锁，而不会造成死锁。
     typealias RecursiveLock = NSRecursiveLock
 #endif

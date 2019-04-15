@@ -17,8 +17,7 @@ import Dispatch
  - 这个调度程序通常用于执行 UI 相关任务。
  - 主调度是一个特殊的串行队列调度`SerialDispatchQueueScheduler` .
 
-This scheduler is optimized for `observeOn` operator. To ensure observable sequence is subscribed on main thread using `subscribeOn`
-operator please use `ConcurrentMainScheduler` because it is more optimized for that purpose.
+ 这个调度程序是为`observeOn`操作符优化的。为了确保 `subscribeOn` 在主线程上调用，请使用 `ConcurrentMainScheduler`(专门为其做了优化)
 */
 public final class MainScheduler : SerialDispatchQueueScheduler {
 

@@ -13,6 +13,7 @@ enum SchedulePeriodicRecursiveCommand {
 
 final class SchedulePeriodicRecursive<State> {
     typealias RecursiveAction = (State) -> State
+    // 值为 SchedulePeriodicRecursiveCommand 的 AnyRecursiveScheduler
     typealias RecursiveScheduler = AnyRecursiveScheduler<SchedulePeriodicRecursiveCommand>
 
     private let _scheduler: SchedulerType

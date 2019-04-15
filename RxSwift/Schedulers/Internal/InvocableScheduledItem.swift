@@ -6,6 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+/// 可调度任务
 struct InvocableScheduledItem<I: InvocableWithValueType> : InvocableType {
 
     let _invocable: I

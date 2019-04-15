@@ -89,23 +89,23 @@ playgroundShouldContinueIndefinitely()
 //}
 
 
-let o = Observable<Int>.from([1,2,3,4,5])
-let result = o.flatMap { num in
-    return Observable.just("\(num + 10)")
-}
-
-o.subscribe { (event) in
-    print(event)
-}
-
-result.subscribe { (e) in
-    print(e)
-}
-Maybe<String>.create { (maybe) in
-    maybe(.success("asdasd"))
-    return Disposables.create {
-    }
-}
+//let o = Observable<Int>.from([1,2,3,4,5])
+//let result = o.flatMap { num in
+//    return Observable.just("\(num + 10)")
+//}
+//
+//o.subscribe { (event) in
+//    print(event)
+//}
+//
+//result.subscribe { (e) in
+//    print(e)
+//}
+//Maybe<String>.create { (maybe) in
+//    maybe(.success("asdasd"))
+//    return Disposables.create {
+//    }
+//}
 
 
 

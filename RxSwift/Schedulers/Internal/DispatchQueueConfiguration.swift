@@ -11,7 +11,7 @@ import struct Foundation.TimeInterval
 
 
 
-/// 队列配置(包含DispatchQueue队列对象，和时间)
+/// 队列配置(包含DispatchQueue队列对象，和偏差时间)
 struct DispatchQueueConfiguration {
     let queue: DispatchQueue
     let leeway: DispatchTimeInterval
@@ -31,6 +31,13 @@ private func dispatchInterval(_ interval: Foundation.TimeInterval) -> DispatchTi
 }
 
 extension DispatchQueueConfiguration {
+
+    /// 将任务插入队列并异步执行
+    ///
+    /// - Parameters:
+    ///   - state: 传入 action 参数
+    ///   - action: 任务闭包
+    /// - Returns: Disposable
     func schedule<StateType>(_ state: StateType, action: @escaping (StateType) -> Disposable) -> Disposable {
         let cancel = SingleAssignmentDisposable()
 
@@ -46,6 +53,14 @@ extension DispatchQueueConfiguration {
         return cancel
     }
 
+
+    /// 队列中延迟执行指定事件
+    ///
+    /// - Parameters:
+    ///   - state: 传入 action 参数
+    ///   - dueTime: 延迟时间
+    ///   - action: 任务闭包
+    /// - Returns: Disposable
     func scheduleRelative<StateType>(_ state: StateType, dueTime: Foundation.TimeInterval, action: @escaping (StateType) -> Disposable) -> Disposable {
         let deadline = DispatchTime.now() + dispatchInterval(dueTime)
 
@@ -80,6 +95,15 @@ extension DispatchQueueConfiguration {
         return compositeDisposable
     }
 
+
+    /// 队列中指定事件之后循环执行指定事件
+    ///
+    /// - Parameters:
+    ///   - state: 传入 action 的值
+    ///   - startAfter: 延迟时间
+    ///   - period: 重复执行间隔
+    ///   - action: 闭包事件
+    /// - Returns: Disposable
     func schedulePeriodic<StateType>(_ state: StateType, startAfter: TimeInterval, period: TimeInterval, action: @escaping (StateType) -> StateType) -> Disposable {
         let initial = DispatchTime.now() + dispatchInterval(startAfter)
 

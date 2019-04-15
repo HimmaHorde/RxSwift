@@ -6,17 +6,24 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+
+/// 队列状态
+///
+/// - initial: 初始
+/// - added: 添加中
+/// - done: 完成
 private enum ScheduleState {
     case initial
     case added(CompositeDisposable.DisposeKey)
     case done
 }
 
-/// 类型擦除递归调度程序。
+/// 加递归锁，执行操作。
 final class AnyRecursiveScheduler<State> {
     
     typealias Action =  (State, AnyRecursiveScheduler<State>) -> Void
 
+    // 递归锁
     private let _lock = RecursiveLock()
     
     // state
@@ -31,10 +38,10 @@ final class AnyRecursiveScheduler<State> {
     }
 
     /**
-    Schedules an action to be executed recursively.
+    调度递归执行的操作。
     
-    - parameter state: State passed to the action to be executed.
-    - parameter dueTime: Relative time after which to execute the recursive action.
+    - parameter state: 状态传递给要执行的操作。
+    - parameter dueTime: 执行递归操作后的相对时间。
     */
     func schedule(_ state: State, dueTime: RxTimeInterval) {
         var scheduleState: ScheduleState = .initial
@@ -44,7 +51,8 @@ final class AnyRecursiveScheduler<State> {
             if self._group.isDisposed {
                 return Disposables.create()
             }
-            
+
+            // 给 action 加锁
             let action = self._lock.calculateLocked { () -> Action? in
                 switch scheduleState {
                 case let .added(removeKey):
@@ -59,7 +67,8 @@ final class AnyRecursiveScheduler<State> {
 
                 return self._action
             }
-            
+
+            /// 递归指定 action
             if let action = action {
                 action(state, self)
             }
@@ -84,9 +93,9 @@ final class AnyRecursiveScheduler<State> {
         }
     }
 
-    /// Schedules an action to be executed recursively.
+    /// 调度递归执行的操作。
     ///
-    /// - parameter state: State passed to the action to be executed.
+    /// - parameter state: 状态传递给要执行的操作。
     func schedule(_ state: State) {
         var scheduleState: ScheduleState = .initial
 
@@ -143,7 +152,7 @@ final class AnyRecursiveScheduler<State> {
     }
 }
 
-/// Type erased recursive scheduler.
+/// 立即执行的递归调度器
 final class RecursiveImmediateScheduler<State> {
     typealias Action =  (_ state: State, _ recurse: (State) -> Void) -> Void
     

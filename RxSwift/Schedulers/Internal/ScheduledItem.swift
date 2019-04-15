@@ -6,6 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
+
+/// 调速器的单个任务
 struct ScheduledItem<T>
     : ScheduledItemType
     , InvocableType {
