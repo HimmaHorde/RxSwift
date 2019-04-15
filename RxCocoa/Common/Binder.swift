@@ -9,13 +9,13 @@
 import RxSwift
 
 /**
- Observer that enforces interface binding rules:
- * can't bind errors (in debug builds binding of errors causes `fatalError` in release builds errors are being logged)
- * ensures binding is performed on a specific scheduler
+ 执行接口绑定规则的观察者:
+ * 不能绑定 errors (Debug 会`fatalError` ，release 会打印错误日志)
+ * 确保绑定在特定的调度程序上执行
 
- `Binder` doesn't retain target and in case target is released, element isn't bound.
- 
- By default it binds elements on main scheduler.
+ `Binder` 不会强引用 target，如果 target 被释放，元素不会被绑定。
+
+ 在主线程观察订阅事件
  */
 public struct Binder<Value>: ObserverType {
     public typealias E = Value

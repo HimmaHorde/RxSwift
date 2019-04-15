@@ -51,7 +51,7 @@ public struct AnyObserver<Element> : ObserverType {
 }
 
 extension AnyObserver {
-    /// Collection of `AnyObserver`s
+    /// 观察者`AnyObserver`集合
     typealias s = Bag<(Event<Element>) -> Void>
 }
 

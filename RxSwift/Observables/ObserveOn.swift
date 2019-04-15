@@ -9,7 +9,7 @@
 extension ObservableType {
 
     /**
-     Wraps the source sequence in order to run its observer callbacks on the specified scheduler.
+     封装源序列，以便在指定的调度程序上运行其观察者回调。
 
      This only invokes observer callbacks on a `scheduler`. In case the subscription and/or unsubscription
      actions have side-effects that require to be run on a scheduler, use `subscribeOn`.

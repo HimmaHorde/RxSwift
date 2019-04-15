@@ -8,7 +8,7 @@
 
 import RxSwift
 
-/// 包装 `PublishSubject`
+/// 包装 `PublishSubject` 的结构体，不需要初始值。
 ///
 /// 不会产生 error or completed 事件
 public final class PublishRelay<Element>: ObservableType {

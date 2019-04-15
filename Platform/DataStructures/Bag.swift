@@ -51,6 +51,7 @@ struct Bag<T> : CustomDebugStringConvertible {
     // last is sparse dictionary
     var _dictionary: [BagKey: T]?
 
+    // 只有一个元素或者没有元素
     var _onlyFastPath = true
 
     /// Creates new empty `Bag`.

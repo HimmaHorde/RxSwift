@@ -6,9 +6,9 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents an object that is both an observable sequence as well as an observer.
+/// 表示同时是可观察序列和观察者的对象。它不需要初始值就能创建。
 ///
-/// Each notification is broadcasted to all subscribed observers.
+/// 每个通知将广播给所有订阅的观察员。一对多的关系。
 public final class PublishSubject<Element>
     : Observable<Element>
     , SubjectType
@@ -20,7 +20,7 @@ public final class PublishSubject<Element>
     typealias Observers = AnyObserver<Element>.s
     typealias DisposeKey = Observers.KeyType
     
-    /// Indicates whether the subject has any observers
+    /// 是否有观察者
     public var hasObservers: Bool {
         self._lock.lock()
         let count = self._observers.count > 0
@@ -40,12 +40,12 @@ public final class PublishSubject<Element>
         fileprivate let _synchronizationTracker = SynchronizationTracker()
     #endif
 
-    /// Indicates whether the subject has been isDisposed.
+    /// 是否已处理资源
     public var isDisposed: Bool {
         return self._isDisposed
     }
     
-    /// Creates a subject.
+    /// 创建实例
     public override init() {
         super.init()
         #if TRACE_RESOURCES
@@ -53,17 +53,19 @@ public final class PublishSubject<Element>
         #endif
     }
     
-    /// Notifies all subscribed observers about next event.
+    /// 通知所有订阅的观察者下一个事件。
     ///
-    /// - parameter event: Event to send to the observers.
+    /// - parameter event: 事件发送给观察者。
     public func on(_ event: Event<Element>) {
         #if DEBUG
             self._synchronizationTracker.register(synchronizationErrorMessage: .default)
             defer { self._synchronizationTracker.unregister() }
         #endif
+        // 将 event 传入所有的 obsvers.on 事件中。
         dispatch(self._synchronized_on(event), event)
     }
 
+    // 获取处理订阅事件的集合
     func _synchronized_on(_ event: Event<E>) -> Observers {
         self._lock.lock(); defer { self._lock.unlock() }
         switch event {
@@ -87,9 +89,9 @@ public final class PublishSubject<Element>
     }
     
     /**
-    Subscribes an observer to the subject.
+    订阅观察者
     
-    - parameter observer: Observer to subscribe to the subject.
+    - parameter observer: 观察者
     - returns: Disposable object that can be used to unsubscribe the observer from the subject.
     */
     public override func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == Element {

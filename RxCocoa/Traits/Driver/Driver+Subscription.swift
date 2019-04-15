@@ -13,13 +13,13 @@ private let errorMessage = "`drive*` family of methods can be only called from `
 
 extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
     /**
-    Creates new subscription and sends elements to observer.
-    This method can be only called from `MainThread`.
+     创建新的订阅并向观察者发送元素。
+     此方法只能从“主线程”调用。
 
-    In this form it's equivalent to `subscribe` method, but it communicates intent better.
+     相当于`subscribe`方法。
 
-    - parameter observer: Observer that receives events.
-    - returns: Disposable object that can be used to unsubscribe the observer from the subject.
+    - parameter observer: 接收事件的观察者。
+    - returns: Disposable 对象，可以取消观察者的订阅
     */
     public func drive<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
         MainScheduler.ensureRunningOnMainThread(errorMessage: errorMessage)
@@ -27,13 +27,13 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 
     /**
-     Creates new subscription and sends elements to observer.
-     This method can be only called from `MainThread`.
+     创建新的订阅并向观察者发送元素(元素为可选类型)。
+     此方法只能从“主线程”调用。
 
-     In this form it's equivalent to `subscribe` method, but it communicates intent better.
+     相当于`subscribe`方法。
 
-     - parameter observer: Observer that receives events.
-     - returns: Disposable object that can be used to unsubscribe the observer from the subject.
+     - parameter observer: 接收事件的观察者。
+     - returns: Disposable 对象，可以取消观察者的订阅
      */
     public func drive<O: ObserverType>(_ observer: O) -> Disposable where O.E == E? {
         MainScheduler.ensureRunningOnMainThread(errorMessage: errorMessage)
@@ -41,10 +41,10 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 
     /**
-    Creates new subscription and sends elements to `BehaviorRelay`.
-    This method can be only called from `MainThread`.
+     创建新的订阅并将元素发送到`BehaviorRelay`。
+     此方法只能从`MainThread`调用。
 
-    - parameter relay: Target relay for sequence elements.
+    - parameter relay: 序列元素的目标中继。
     - returns: Disposable object that can be used to unsubscribe the observer from the relay.
     */
     public func drive(_ relay: BehaviorRelay<E>) -> Disposable {
@@ -55,10 +55,10 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 
     /**
-     Creates new subscription and sends elements to `BehaviorRelay`.
-     This method can be only called from `MainThread`.
+     创建新的订阅并将元素发送到`BehaviorRelay`。
+     此方法只能从`MainThread`调用。
 
-     - parameter relay: Target relay for sequence elements.
+     - parameter relay: 序列元素的目标中继。
      - returns: Disposable object that can be used to unsubscribe the observer from the relay.
      */
     public func drive(_ relay: BehaviorRelay<E?>) -> Disposable {
