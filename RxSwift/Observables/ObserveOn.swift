@@ -165,7 +165,7 @@ final private class ObserveOnSink<O: ObserverType>: ObserverBase<O.E> {
 #endif
 
 
-/// 观察者：内部包装一个观察者
+/// 观察者：内部包装一个观察者,on 方法内部使用指定调度器执行底层观察者的 on 方法。
 final private class ObserveOnSerialDispatchQueueSink<O: ObserverType>: ObserverBase<O.E> {
     let scheduler: SerialDispatchQueueScheduler
     let observer: O

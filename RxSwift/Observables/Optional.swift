@@ -8,7 +8,7 @@
 
 extension ObservableType {
     /**
-     Converts a optional to an observable sequence.
+     将可选序列转换为可观察序列。发出0-1个 netx 事件，和一个 complete 事件。
 
      - seealso: [from operator on reactivex.io](http://reactivex.io/documentation/operators/from.html)
 
@@ -20,7 +20,7 @@ extension ObservableType {
     }
 
     /**
-     Converts a optional to an observable sequence.
+     将可选序列转换为可观察序列。发出0-1个 netx 事件，和一个 complete 事件。
 
      - seealso: [from operator on reactivex.io](http://reactivex.io/documentation/operators/from.html)
 

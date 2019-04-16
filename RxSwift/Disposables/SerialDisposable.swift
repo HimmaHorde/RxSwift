@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// Represents a disposable resource whose underlying disposable resource can be replaced by another disposable resource, causing automatic disposal of the previous underlying disposable resource.
+/// 表示一个可使用资源，其底层 Disposable 对象可以赋值，赋值时之前的 Disposable 对象触发 dispose()。
 public final class SerialDisposable : DisposeBase, Cancelable {
     private var _lock = SpinLock()
     
@@ -55,7 +55,7 @@ public final class SerialDisposable : DisposeBase, Cancelable {
         }
     }
     
-    /// Disposes the underlying disposable as well as all future replacements.
+    /// 处理底层Disposable，并将之后赋值的Disposable对象直接处理.
     public func dispose() {
         self._dispose()?.dispose()
     }
