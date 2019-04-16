@@ -177,21 +177,6 @@ extension DriverTest {
         XCTAssertEqual(results, [0, 1, 2])
     }
 
-    func testVariableAsDriver() {
-        var hotObservable: Variable<Int>? = Variable(1)
-        let xs = Driver.zip(hotObservable!.asDriver(), Driver.of(0, 0)) { optInt, _ in
-            return optInt
-        }
-
-        let results = subscribeTwiceOnBackgroundSchedulerAndOnlyOneSubscription(xs) {
-            hotObservable?.value = 1
-            hotObservable?.value = 2
-            hotObservable = nil
-        }
-
-        XCTAssertEqual(results, [1, 1])
-    }
-
     func testAsDriver_onErrorJustReturn() {
         let hotObservable = BackgroundThreadPrimitiveHotObservable<Int>()
         let xs = hotObservable.asDriver(onErrorJustReturn: -1)
