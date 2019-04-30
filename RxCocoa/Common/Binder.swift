@@ -18,7 +18,7 @@ import RxSwift
  在主线程观察订阅事件
  */
 public struct Binder<Value>: ObserverType {
-    public typealias E = Value
+    public typealias Element = Value
     
     private let _binding: (Event<Value>) -> Void
 

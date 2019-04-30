@@ -13,10 +13,13 @@
 ///
 public protocol ObservableConvertibleType {
     /// 序列中元素的类型。
-    associatedtype E
+    associatedtype Element
+
+    @available(*, deprecated, message: "Use `Element` instead.")
+    typealias E = Element
 
     /// 转为为 `Observable` 序列.
     ///
     /// - returns: 由 `self` 转化为的 Observable 序列
-    func asObservable() -> Observable<E>
+    func asObservable() -> Observable<Element>
 }

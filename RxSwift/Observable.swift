@@ -10,9 +10,6 @@
 ///
 /// 它表示一个push样式序列.
 public class Observable<Element> : ObservableType {
-    /// 序列中元素的类型。
-    public typealias E = Element
-    
     init() {
 #if TRACE_RESOURCES
         _ = Resources.incrementTotal()
@@ -20,11 +17,11 @@ public class Observable<Element> : ObservableType {
     }
 
     // Observable 中并未直接实现 subscribe 方法，这里直接强制抛出错误，需要被重写。
-    public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
+    public func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
         rxAbstractMethod()
     }
     
-    public func asObservable() -> Observable<E> {
+    public func asObservable() -> Observable<Element> {
         return self
     }
     
@@ -38,7 +35,7 @@ public class Observable<Element> : ObservableType {
     // Swift compiler reports "Not supported yet" when trying to override protocol extensions, so ¯\_(ツ)_/¯
 
     /// map 操作符的优化
-    internal func composeMap<R>(_ transform: @escaping (Element) throws -> R) -> Observable<R> {
+    internal func composeMap<Result>(_ transform: @escaping (Element) throws -> Result) -> Observable<Result> {
         return _map(source: self, transform: transform)
     }
 }

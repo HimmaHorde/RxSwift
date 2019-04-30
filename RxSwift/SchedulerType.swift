@@ -6,11 +6,11 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import struct Foundation.TimeInterval
+import enum Dispatch.DispatchTimeInterval
 import struct Foundation.Date
 
-// Rx的时间类型 秒 = Double
-public typealias RxTimeInterval = TimeInterval
+// Type that represents time interval in the context of RxSwift.
+public typealias RxTimeInterval = DispatchTimeInterval
 
 /// Rx的日期类型 = Date
 public typealias RxTime = Date

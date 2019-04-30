@@ -16,8 +16,8 @@ extension ObservableType {
      - parameter elements: 需要添加到指定序列前的元素
      - returns: 以指定值为前缀的新序列
      */
-    public func startWith(_ elements: E ...)
-        -> Observable<E> {
+    public func startWith(_ elements: Element ...)
+        -> Observable<Element> {
             return StartWith(source: self.asObservable(), elements: elements)
     }
 }
@@ -38,7 +38,7 @@ final private class StartWith<Element>: Producer<Element> {
         super.init()
     }
 
-    override func run<O: ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.E == Element {
+    override func run<Observer: ObserverType>(_ observer: Observer, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where Observer.Element == Element {
         for e in self.elements {
             observer.on(.next(e))
         }

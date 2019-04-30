@@ -10,9 +10,6 @@
 ///
 /// Forwards operations to an arbitrary underlying observer with the same `Element` type, hiding the specifics of the underlying observer type.
 public struct AnyObserver<Element> : ObserverType {
-    /// 观察者可以观察到的序列元素的类型。
-    public typealias E = Element
-    
     /// 匿名事件处理程序类型
     public typealias EventHandler = (Event<Element>) -> Void
 
@@ -30,7 +27,7 @@ public struct AnyObserver<Element> : ObserverType {
     /// 用于将匿名和私有的观察者转化为 AnyObserver
     ///
     /// - parameter observer: 接受序列时间的观察者
-    public init<O : ObserverType>(_ observer: O) where O.E == Element {
+    public init<Observer: ObserverType>(_ observer: Observer) where Observer.Element == Element {
         // 持有 observe 的 on 方法，形成强引用。
         self.observer = observer.on
     }
@@ -45,7 +42,7 @@ public struct AnyObserver<Element> : ObserverType {
     /// Erases type of observer and returns canonical observer.
     ///
     /// - returns: type erased observer.
-    public func asObserver() -> AnyObserver<E> {
+    public func asObserver() -> AnyObserver<Element> {
         return self
     }
 }
@@ -59,14 +56,14 @@ extension ObserverType {
     /// 可擦除类型观察者转化为 AnyObserver 类型
     ///
     /// - returns: type erased observer.
-    public func asObserver() -> AnyObserver<E> {
+    public func asObserver() -> AnyObserver<Element> {
         return AnyObserver(self)
     }
 
     /// 使用自定义转换方法将R类型的观察者转换为E类型。每个发送到结果观察者的事件都被转换并发送到“self”。
     ///
     /// - returns: observer that transforms events.
-    public func mapObserver<R>(_ transform: @escaping (R) throws -> E) -> AnyObserver<R> {
+    public func mapObserver<Result>(_ transform: @escaping (Result) throws -> Element) -> AnyObserver<Result> {
         return AnyObserver { e in
             self.on(e.map(transform))
         }

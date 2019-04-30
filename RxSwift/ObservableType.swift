@@ -7,7 +7,8 @@
 //
 
 /// 协议:定义了 subscribe 方法,继承自 `ObservableConvertibleType`。
-public protocol ObservableType : ObservableConvertibleType {
+public protocol ObservableType: ObservableConvertibleType  {
+
     /**
     传入观察者，接收序列的消息
     
@@ -31,13 +32,12 @@ public protocol ObservableType : ObservableConvertibleType {
     
     - returns: Subscription for `observer` that can be used to cancel production of sequence elements and free resources.
     */
-    func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E
+    func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element
 }
 
 extension ObservableType {
-    
     /// 默认实现：将遵循 `ObservableType` 协议的对象转化为 `Observable` 对象.
-    public func asObservable() -> Observable<E> {
+    public func asObservable() -> Observable<Element> {
         // temporary workaround
         //return Observable.create(subscribe: self.subscribe)
         return Observable.create { o in

@@ -20,39 +20,39 @@ public struct PrimitiveSequence<Trait, Element> {
 
 /// 包含0或1个元素的可观察序列的协议
 public protocol PrimitiveSequenceType {
+
     /// 用于判断特征
-    associatedtype TraitType
+    associatedtype Trait
+
     /// 序列元素类型
-    associatedtype ElementType
+    associatedtype Element
+
+    @available(*, deprecated, message: "Use `Trait` instead.")
+    typealias TraitType = Trait
+
+    @available(*, deprecated, message: "Use `Element` instead.")
+    typealias ElementType = Element
 
     // Converts `self` to primitive sequence.
     ///
     /// - returns: Observable sequence that represents `self`.
-    var primitiveSequence: PrimitiveSequence<TraitType, ElementType> { get }
+    var primitiveSequence: PrimitiveSequence<Trait, Element> { get }
 }
 
 extension PrimitiveSequence: PrimitiveSequenceType {
-    /// Additional constraints
-    public typealias TraitType = Trait
-    /// Sequence element type
-    public typealias ElementType = Element
-
     // Converts `self` to primitive sequence.
     ///
     /// - returns: Observable sequence that represents `self`.
-    public var primitiveSequence: PrimitiveSequence<TraitType, ElementType> {
+    public var primitiveSequence: PrimitiveSequence<Trait, Element> {
         return self
     }
 }
 
 extension PrimitiveSequence: ObservableConvertibleType {
-    /// Type of elements in sequence.
-    public typealias E = Element
-
     /// 将自身转换为 `Observable` 序列 (self.source)
     ///
     /// - returns: Observable sequence that represents `self`.
-    public func asObservable() -> Observable<E> {
+    public func asObservable() -> Observable<Element> {
         return self.source
     }
 }
@@ -216,7 +216,7 @@ extension PrimitiveSequence {
      */
     public static func using<Resource: Disposable>(_ resourceFactory: @escaping () throws -> Resource, primitiveSequenceFactory: @escaping (Resource) throws -> PrimitiveSequence<Trait, Element>)
         -> PrimitiveSequence<Trait, Element> {
-            return PrimitiveSequence(raw: Observable.using(resourceFactory, observableFactory: { (resource: Resource) throws -> Observable<E> in
+            return PrimitiveSequence(raw: Observable.using(resourceFactory, observableFactory: { (resource: Resource) throws -> Observable<Element> in
                 return try primitiveSequenceFactory(resource).asObservable()
             }))
     }
@@ -252,7 +252,7 @@ extension PrimitiveSequence {
     }
 }
 
-extension PrimitiveSequenceType where ElementType: RxAbstractInteger
+extension PrimitiveSequenceType where Element: RxAbstractInteger
 {
     /**
      Returns an observable sequence that periodically produces a value after the specified initial relative due time has elapsed, using the specified scheduler to run timers.
@@ -264,7 +264,7 @@ extension PrimitiveSequenceType where ElementType: RxAbstractInteger
      - returns: An observable sequence that produces a value after due time has elapsed and then each period.
      */
     public static func timer(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
-        -> PrimitiveSequence<TraitType, ElementType>  {
-        return PrimitiveSequence(raw: Observable<ElementType>.timer(dueTime, scheduler: scheduler))
+        -> PrimitiveSequence<Trait, Element>  {
+        return PrimitiveSequence(raw: Observable<Element>.timer(dueTime, scheduler: scheduler))
     }
 }

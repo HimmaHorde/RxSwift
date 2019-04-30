@@ -11,11 +11,14 @@ public protocol SubjectType : ObservableType {
     /// 观察者的类型
     ///
     /// 通常这种类型是自身的类型，但它不一定是。
-    associatedtype SubjectObserverType : ObserverType
+    associatedtype Observer: ObserverType
+
+    @available(*, deprecated, message: "Use `Observer` instead.")
+    typealias SubjectObserverType = Observer
 
     /// 自身生成观察者对象
     ///
     /// - returns: 观察者对象
-    func asObserver() -> SubjectObserverType
-    
+    func asObserver() -> Observer
+
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-extension ObservableType where E : RxAbstractInteger {
+extension ObservableType where Element : RxAbstractInteger {
     /**
      该方法通过指定起始和结束数值，创建一个以这个范围内所有值作为初始值的 Observable 序列。
 
@@ -22,17 +22,17 @@ extension ObservableType where E : RxAbstractInteger {
      - parameter scheduler: 生成 Observable 序列的调度程序
      - returns: 包含一系列连序整数的 Observable 序列。
      */
-    public static func range(start: E, count: E, scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance) -> Observable<E> {
-        return RangeProducer<E>(start: start, count: count, scheduler: scheduler)
+    public static func range(start: Element, count: Element, scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance) -> Observable<Element> {
+        return RangeProducer<Element>(start: start, count: count, scheduler: scheduler)
     }
 }
 
-final private class RangeProducer<E: RxAbstractInteger>: Producer<E> {
-    fileprivate let _start: E
-    fileprivate let _count: E
+final private class RangeProducer<Element: RxAbstractInteger>: Producer<Element> {
+    fileprivate let _start: Element
+    fileprivate let _count: Element
     fileprivate let _scheduler: ImmediateSchedulerType
 
-    init(start: E, count: E, scheduler: ImmediateSchedulerType) {
+    init(start: Element, count: Element, scheduler: ImmediateSchedulerType) {
         guard count >= 0 else {
             rxFatalError("count can't be negative")
         }
@@ -46,25 +46,25 @@ final private class RangeProducer<E: RxAbstractInteger>: Producer<E> {
         self._scheduler = scheduler
     }
     
-    override func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.E == E {
+    override func run<Observer: ObserverType>(_ observer: Observer, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where Observer.Element == Element {
         let sink = RangeSink(parent: self, observer: observer, cancel: cancel)
         let subscription = sink.run()
         return (sink: sink, subscription: subscription)
     }
 }
 
-final private class RangeSink<O: ObserverType>: Sink<O> where O.E: RxAbstractInteger {
-    typealias Parent = RangeProducer<O.E>
+final private class RangeSink<Observer: ObserverType>: Sink<Observer> where Observer.Element: RxAbstractInteger {
+    typealias Parent = RangeProducer<Observer.Element>
     
     private let _parent: Parent
     
-    init(parent: Parent, observer: O, cancel: Cancelable) {
+    init(parent: Parent, observer: Observer, cancel: Cancelable) {
         self._parent = parent
         super.init(observer: observer, cancel: cancel)
     }
     
     func run() -> Disposable {
-        return self._parent._scheduler.scheduleRecursive(0 as O.E) { i, recurse in
+        return self._parent._scheduler.scheduleRecursive(0 as Observer.Element) { i, recurse in
             if i < self._parent._count {
                 self.forwardOn(.next(self._parent._start + i))
                 recurse(i + 1)

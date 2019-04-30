@@ -13,12 +13,11 @@ class Producer<Element> : Observable<Element> {
         super.init()
     }
 
-
     /// 实现 Observable 中 subscribe 方法
     ///
     /// - Parameter observer: 观察者/订阅者
     /// - Returns: 实现 Disposable 协议的对象
-    override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
+    override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
         // 假如当前线程队列有任务，不加入队列直接执行
         // 假如队列没有任务，加入队列
         if !CurrentThreadScheduler.isScheduleRequired {
@@ -39,13 +38,12 @@ class Producer<Element> : Observable<Element> {
         }
     }
 
-
     /// Producer 核心函数，子类需重写。
     ///
     /// - Parameters:
     ///   - observer: 观察者
     ///   - cancel:
-    func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.E == Element {
+    func run<Observer: ObserverType>(_ observer: Observer, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where Observer.Element == Element {
         rxAbstractMethod()
     }
 }

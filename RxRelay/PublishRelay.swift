@@ -1,6 +1,6 @@
 //
 //  PublishRelay.swift
-//  RxCocoa
+//  RxRelay
 //
 //  Created by Krunoslav Zaher on 3/28/15.
 //  Copyright © 2017 Krunoslav Zaher. All rights reserved.
@@ -12,8 +12,6 @@ import RxSwift
 ///
 /// 不会产生 error or completed 事件
 public final class PublishRelay<Element>: ObservableType {
-    public typealias E = Element
-
     private let _subject: PublishSubject<Element>
     
     // Accepts `event` and emits it to subscribers
@@ -27,7 +25,7 @@ public final class PublishRelay<Element>: ObservableType {
     }
 
     /// Subscribes observer
-    public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
+    public func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
         return self._subject.subscribe(observer)
     }
     

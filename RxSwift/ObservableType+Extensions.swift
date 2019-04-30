@@ -22,7 +22,7 @@ extension ObservableType {
      - parameter on: Action to invoke for each event in the observable sequence.
      - returns: Subscription object used to unsubscribe from the observable sequence.
      */
-    public func subscribe(_ on: @escaping (Event<E>) -> Void)
+    public func subscribe(_ on: @escaping (Event<Element>) -> Void)
         -> Disposable {
             let observer = AnonymousObserver { e in
                 on(e)
@@ -39,7 +39,7 @@ extension ObservableType {
      - parameter onDisposed: 序列结束执行，处理资源的事件
      - returns: Subscription object used to unsubscribe from the observable sequence.
      */
-    public func subscribe(onNext: ((E) -> Void)? = nil, onError: ((Swift.Error) -> Void)? = nil, onCompleted: (() -> Void)? = nil, onDisposed: (() -> Void)? = nil)
+    public func subscribe(onNext: ((Element) -> Void)? = nil, onError: ((Swift.Error) -> Void)? = nil, onCompleted: (() -> Void)? = nil, onDisposed: (() -> Void)? = nil)
         -> Disposable {
             let disposable: Disposable
             
@@ -56,7 +56,7 @@ extension ObservableType {
             
             let callStack = Hooks.recordCallStackOnError ? Hooks.customCaptureSubscriptionCallstack() : []
             
-            let observer = AnonymousObserver<E> { event in
+            let observer = AnonymousObserver<Element> { event in
                 
                 #if DEBUG
                     synchronizationTracker.register(synchronizationErrorMessage: .default)

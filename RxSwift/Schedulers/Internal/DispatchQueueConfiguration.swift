@@ -17,19 +17,6 @@ struct DispatchQueueConfiguration {
     let leeway: DispatchTimeInterval
 }
 
-
-/// 时间单位转换，秒 转 DispatchTimeInterval
-///
-/// - Parameter interval:时间
-/// - Returns:转换后的时间
-private func dispatchInterval(_ interval: Foundation.TimeInterval) -> DispatchTimeInterval {
-    precondition(interval >= 0.0)
-    // TODO: Replace 1000 with something that actually works 
-    // NSEC_PER_MSEC returns 1000000
-    // 毫秒 -> 转化为 DispatchTimeInterval
-    return DispatchTimeInterval.milliseconds(Int(interval * 1000.0))
-}
-
 extension DispatchQueueConfiguration {
 
     /// 将任务插入队列并异步执行
@@ -53,7 +40,6 @@ extension DispatchQueueConfiguration {
         return cancel
     }
 
-
     /// 队列中延迟执行指定事件
     ///
     /// - Parameters:
@@ -61,8 +47,8 @@ extension DispatchQueueConfiguration {
     ///   - dueTime: 延迟时间
     ///   - action: 任务闭包
     /// - Returns: Disposable
-    func scheduleRelative<StateType>(_ state: StateType, dueTime: Foundation.TimeInterval, action: @escaping (StateType) -> Disposable) -> Disposable {
-        let deadline = DispatchTime.now() + dispatchInterval(dueTime)
+    func scheduleRelative<StateType>(_ state: StateType, dueTime: RxTimeInterval, action: @escaping (StateType) -> Disposable) -> Disposable {
+        let deadline = DispatchTime.now() + dueTime
 
         let compositeDisposable = CompositeDisposable()
 
@@ -95,7 +81,6 @@ extension DispatchQueueConfiguration {
         return compositeDisposable
     }
 
-
     /// 队列中指定事件之后循环执行指定事件
     ///
     /// - Parameters:
@@ -104,13 +89,13 @@ extension DispatchQueueConfiguration {
     ///   - period: 重复执行间隔
     ///   - action: 闭包事件
     /// - Returns: Disposable
-    func schedulePeriodic<StateType>(_ state: StateType, startAfter: TimeInterval, period: TimeInterval, action: @escaping (StateType) -> StateType) -> Disposable {
-        let initial = DispatchTime.now() + dispatchInterval(startAfter)
+    func schedulePeriodic<StateType>(_ state: StateType, startAfter: RxTimeInterval, period: RxTimeInterval, action: @escaping (StateType) -> StateType) -> Disposable {
+        let initial = DispatchTime.now() + startAfter
 
         var timerState = state
 
         let timer = DispatchSource.makeTimerSource(queue: self.queue)
-        timer.schedule(deadline: initial, repeating: dispatchInterval(period), leeway: self.leeway)
+        timer.schedule(deadline: initial, repeating: period, leeway: self.leeway)
         
         // TODO:
         // This looks horrible, and yes, it is.

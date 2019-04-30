@@ -21,7 +21,7 @@ public enum Event<Element> {
     case completed
 }
 
-extension Event : CustomDebugStringConvertible {
+extension Event: CustomDebugStringConvertible {
     /// 对事件的描述。
     public var debugDescription: String {
         switch self {
@@ -92,14 +92,17 @@ extension Event {
 /// 可以转换为 `Event<Element>` 的类型的协议.
 public protocol EventConvertible {
     /// 事件中元素的类型
-    associatedtype ElementType
+    associatedtype Element
+
+    @available(*, deprecated, message: "Use `Element` instead.")
+    typealias ElementType = Element
 
     /// 此实例的事件表示形式
-    var event: Event<ElementType> { get }
+    var event: Event<Element> { get }
 }
 
-extension Event : EventConvertible {
-    /// 此实例的事件表示形式
+extension Event: EventConvertible {
+    /// Event representation of this instance
     public var event: Event<Element> {
         return self
     }
