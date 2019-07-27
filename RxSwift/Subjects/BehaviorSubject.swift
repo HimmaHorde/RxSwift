@@ -40,7 +40,7 @@ public final class BehaviorSubject<Element>
     private var _stoppedEvent: Event<Element>?
 
     #if DEBUG
-        fileprivate let _synchronizationTracker = SynchronizationTracker()
+        private let _synchronizationTracker = SynchronizationTracker()
     #endif
 
     /// 资源是否已处理

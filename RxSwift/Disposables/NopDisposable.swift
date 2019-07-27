@@ -9,11 +9,11 @@
 /// 不做任何处理.
 ///
 /// Nop = No Operation
-fileprivate struct NopDisposable : Disposable {
+private struct NopDisposable : Disposable {
  
     fileprivate static let noOp: Disposable = NopDisposable()
     
-    fileprivate init() {
+    private init() {
         
     }
     

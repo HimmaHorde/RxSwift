@@ -205,8 +205,8 @@ final private class ConnectableObservableAdapter<Subject: SubjectType>
     : ConnectableObservable<Subject.Element> {
     typealias ConnectionType = Connection<Subject>
 
-    fileprivate let _source: Observable<Subject.Observer.Element>
-    fileprivate let _makeSubject: () -> Subject
+    private let _source: Observable<Subject.Observer.Element>
+    private let _makeSubject: () -> Subject
 
     fileprivate let _lock = RecursiveLock()
     fileprivate var _subject: Subject?
@@ -247,7 +247,7 @@ final private class ConnectableObservableAdapter<Subject: SubjectType>
     }
 
     /// 返回 subject 对象，如果不存在生成 subject 对象。
-    fileprivate var lazySubject: Subject {
+    private var lazySubject: Subject {
         if let subject = self._subject {
             return subject
         }

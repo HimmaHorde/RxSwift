@@ -75,7 +75,7 @@ public class CurrentThreadScheduler : ImmediateSchedulerType {
 
     /// 返回一个值，用来表示调用者是否必须调用 `schedule` 方法， 默认 YES
     /// > 对于一个新的线程默认是需要调度的
-    public static fileprivate(set) var isScheduleRequired: Bool {
+    public static private(set) var isScheduleRequired: Bool {
         get {
             return pthread_getspecific(CurrentThreadScheduler.isScheduleRequiredKey) == nil
         }

@@ -37,7 +37,7 @@ struct Bag<T> : CustomDebugStringConvertible {
     typealias Entry = (key: BagKey, value: T)
 
     // 自增key值
-    fileprivate var _nextKey: BagKey = BagKey(rawValue: 0)
+    private var _nextKey: BagKey = BagKey(rawValue: 0)
 
     // data
 
