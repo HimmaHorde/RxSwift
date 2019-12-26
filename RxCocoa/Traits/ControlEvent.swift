@@ -20,10 +20,10 @@ public protocol ControlEventType : ObservableType {
 
     Properties:
 
-    - 不会失败,
-    - 它不会在订阅时发送任何初始值,
+    - 它不会在订阅时发送任何初始值，,
+    - 当控件释放时，序列就完成了,
     - 当控件释放时，结束序列,
-    - 不会产生 error 事件, and
+    - 不会产生 error 事件
     - 在主线程 `MainScheduler.instance` 订阅监听。
 
     **The implementation of `ControlEvent` will ensure that sequence of events is being subscribed on main scheduler
@@ -33,7 +33,7 @@ public protocol ControlEventType : ObservableType {
 
     **If they aren’t, using this trait will communicate wrong properties, and could potentially break someone’s code.**
 
-    **If the `events` observable sequence passed into thr initializer doesn’t satisfy all enumerated
+    **If the `events` observable sequence passed into the initializer doesn’t satisfy all enumerated
      properties, don’t use this trait.**
 */
 public struct ControlEvent<PropertyType> : ControlEventType {

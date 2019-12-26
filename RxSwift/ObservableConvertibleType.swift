@@ -15,7 +15,7 @@ public protocol ObservableConvertibleType {
     /// 序列中元素的类型。
     associatedtype Element
 
-    @available(*, deprecated, message: "Use `Element` instead.")
+    @available(*, deprecated, renamed: "Element")
     typealias E = Element
 
     /// 转为为 `Observable` 序列.

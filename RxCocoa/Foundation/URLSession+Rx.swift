@@ -7,17 +7,25 @@
 //
 
 import struct Foundation.URL
-import struct Foundation.URLRequest
 import struct Foundation.Data
 import struct Foundation.Date
 import struct Foundation.TimeInterval
-import class Foundation.HTTPURLResponse
-import class Foundation.URLSession
-import class Foundation.URLResponse
 import class Foundation.JSONSerialization
 import class Foundation.NSError
 import var Foundation.NSURLErrorCancelled
 import var Foundation.NSURLErrorDomain
+
+#if canImport(FoundationNetworking)
+import struct FoundationNetworking.URLRequest
+import class FoundationNetworking.HTTPURLResponse
+import class FoundationNetworking.URLSession
+import class FoundationNetworking.URLResponse
+#else
+import struct Foundation.URLRequest
+import class Foundation.HTTPURLResponse
+import class Foundation.URLSession
+import class Foundation.URLResponse
+#endif
 
 #if os(Linux)
     // don't know why
@@ -64,7 +72,7 @@ private func convertURLRequestToCurlCommand(_ request: URLRequest) -> String {
     let method = request.httpMethod ?? "GET"
     var returnValue = "curl -X \(method) "
 
-    if let httpBody = request.httpBody, request.httpMethod == "POST" {
+    if let httpBody = request.httpBody, request.httpMethod == "POST" || request.httpMethod == "PUT" {
         let maybeBody = String(data: httpBody, encoding: String.Encoding.utf8)
         if let body = maybeBody {
             returnValue += "-d \"\(escapeTerminalString(body))\" "

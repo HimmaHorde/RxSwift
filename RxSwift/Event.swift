@@ -94,7 +94,7 @@ public protocol EventConvertible {
     /// 事件中元素的类型
     associatedtype Element
 
-    @available(*, deprecated, message: "Use `Element` instead.")
+    @available(*, deprecated, renamed: "Element")
     typealias ElementType = Element
 
     /// 此实例的事件表示形式

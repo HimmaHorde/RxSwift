@@ -13,7 +13,7 @@ public protocol SubjectType : ObservableType {
     /// 通常这种类型是自身的类型，但它不一定是。
     associatedtype Observer: ObserverType
 
-    @available(*, deprecated, message: "Use `Observer` instead.")
+    @available(*, deprecated, renamed: "Observer")
     typealias SubjectObserverType = Observer
 
     /// 自身生成观察者对象

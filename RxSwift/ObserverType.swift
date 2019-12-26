@@ -11,7 +11,7 @@ public protocol ObserverType {
     /// 观察者可以订阅序列的元素类型
     associatedtype Element
 
-    @available(*, deprecated, message: "Use `Element` instead.")
+    @available(*, deprecated, renamed: "Element")
     typealias E = Element
 
     /// 将 `Observable` 序列事件通知观察者

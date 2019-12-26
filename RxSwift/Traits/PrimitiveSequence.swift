@@ -27,10 +27,10 @@ public protocol PrimitiveSequenceType {
     /// 序列元素类型
     associatedtype Element
 
-    @available(*, deprecated, message: "Use `Trait` instead.")
+    @available(*, deprecated, renamed: "Trait")
     typealias TraitType = Trait
 
-    @available(*, deprecated, message: "Use `Element` instead.")
+    @available(*, deprecated, renamed: "Element")
     typealias ElementType = Element
 
     // Converts `self` to primitive sequence.
@@ -147,7 +147,7 @@ extension PrimitiveSequence {
      */
     public func catchError(_ handler: @escaping (Swift.Error) throws -> PrimitiveSequence<Trait, Element>)
         -> PrimitiveSequence<Trait, Element> {
-        return PrimitiveSequence(raw: self.source.catchError { try handler($0).asObservable() })
+        PrimitiveSequence(raw: self.source.catchError { try handler($0).asObservable() })
     }
 
     /**
@@ -160,7 +160,7 @@ extension PrimitiveSequence {
      */
     public func retry(_ maxAttemptCount: Int)
         -> PrimitiveSequence<Trait, Element> {
-        return PrimitiveSequence(raw: self.source.retry(maxAttemptCount))
+        PrimitiveSequence(raw: self.source.retry(maxAttemptCount))
     }
 
     /**
@@ -174,7 +174,7 @@ extension PrimitiveSequence {
      */
     public func retryWhen<TriggerObservable: ObservableType, Error: Swift.Error>(_ notificationHandler: @escaping (Observable<Error>) -> TriggerObservable)
         -> PrimitiveSequence<Trait, Element> {
-        return PrimitiveSequence(raw: self.source.retryWhen(notificationHandler))
+        PrimitiveSequence(raw: self.source.retryWhen(notificationHandler))
     }
 
     /**
@@ -188,7 +188,7 @@ extension PrimitiveSequence {
      */
     public func retryWhen<TriggerObservable: ObservableType>(_ notificationHandler: @escaping (Observable<Swift.Error>) -> TriggerObservable)
         -> PrimitiveSequence<Trait, Element> {
-        return PrimitiveSequence(raw: self.source.retryWhen(notificationHandler))
+        PrimitiveSequence(raw: self.source.retryWhen(notificationHandler))
     }
 
     /**
@@ -202,7 +202,7 @@ extension PrimitiveSequence {
      */
     public func debug(_ identifier: String? = nil, trimOutput: Bool = false, file: String = #file, line: UInt = #line, function: String = #function)
         -> PrimitiveSequence<Trait, Element> {
-            return PrimitiveSequence(raw: self.source.debug(identifier, trimOutput: trimOutput, file: file, line: line, function: function))
+        PrimitiveSequence(raw: self.source.debug(identifier, trimOutput: trimOutput, file: file, line: line, function: function))
     }
     
     /**
@@ -216,9 +216,9 @@ extension PrimitiveSequence {
      */
     public static func using<Resource: Disposable>(_ resourceFactory: @escaping () throws -> Resource, primitiveSequenceFactory: @escaping (Resource) throws -> PrimitiveSequence<Trait, Element>)
         -> PrimitiveSequence<Trait, Element> {
-            return PrimitiveSequence(raw: Observable.using(resourceFactory, observableFactory: { (resource: Resource) throws -> Observable<Element> in
-                return try primitiveSequenceFactory(resource).asObservable()
-            }))
+        PrimitiveSequence(raw: Observable.using(resourceFactory, observableFactory: { (resource: Resource) throws -> Observable<Element> in
+            return try primitiveSequenceFactory(resource).asObservable()
+        }))
     }
 
     /**
@@ -232,7 +232,7 @@ extension PrimitiveSequence {
      */
     public func timeout(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> PrimitiveSequence<Trait, Element> {
-            return PrimitiveSequence<Trait, Element>(raw: self.primitiveSequence.source.timeout(dueTime, scheduler: scheduler))
+        PrimitiveSequence<Trait, Element>(raw: self.primitiveSequence.source.timeout(dueTime, scheduler: scheduler))
     }
     
     /**
@@ -248,7 +248,7 @@ extension PrimitiveSequence {
     public func timeout(_ dueTime: RxTimeInterval,
                         other: PrimitiveSequence<Trait, Element>,
                         scheduler: SchedulerType) -> PrimitiveSequence<Trait, Element> {
-        return PrimitiveSequence<Trait, Element>(raw: self.primitiveSequence.source.timeout(dueTime, other: other.source, scheduler: scheduler))
+        PrimitiveSequence<Trait, Element>(raw: self.primitiveSequence.source.timeout(dueTime, other: other.source, scheduler: scheduler))
     }
 }
 
@@ -265,6 +265,6 @@ extension PrimitiveSequenceType where Element: RxAbstractInteger
      */
     public static func timer(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> PrimitiveSequence<Trait, Element>  {
-        return PrimitiveSequence(raw: Observable<Element>.timer(dueTime, scheduler: scheduler))
+        PrimitiveSequence(raw: Observable<Element>.timer(dueTime, scheduler: scheduler))
     }
 }

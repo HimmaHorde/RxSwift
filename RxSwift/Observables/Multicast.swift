@@ -60,7 +60,7 @@ extension ObservableType {
     - returns: 可连接的可观察序列
     */
     public func publish() -> ConnectableObservable<Element> {
-        return self.multicast { PublishSubject() }
+        self.multicast { PublishSubject() }
     }
 }
 
@@ -78,7 +78,7 @@ extension ObservableType {
      */
     public func replay(_ bufferSize: Int)
         -> ConnectableObservable<Element> {
-        return self.multicast { ReplaySubject.create(bufferSize: bufferSize) }
+        self.multicast { ReplaySubject.create(bufferSize: bufferSize) }
     }
 
     /**
@@ -92,7 +92,7 @@ extension ObservableType {
      */
     public func replayAll()
         -> ConnectableObservable<Element> {
-        return self.multicast { ReplaySubject.createUnbounded() }
+        self.multicast { ReplaySubject.createUnbounded() }
     }
 }
 
@@ -127,7 +127,7 @@ extension ObservableType {
      */
     public func multicast<Subject: SubjectType>(_ subject: Subject)
         -> ConnectableObservable<Subject.Element> where Subject.Observer.Element == Element {
-        return ConnectableObservableAdapter(source: self.asObservable(), makeSubject: { subject })
+        ConnectableObservableAdapter(source: self.asObservable(), makeSubject: { subject })
     }
 
     /**
