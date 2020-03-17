@@ -48,7 +48,6 @@ class Producer<Element> : Observable<Element> {
     }
 }
 
-/// 管理 sink 类的资源管理器
 private final class SinkDisposer: Cancelable {
     private enum DisposeState: Int32 {
         case disposed = 1

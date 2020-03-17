@@ -246,7 +246,6 @@ final private class ConnectableObservableAdapter<Subject: SubjectType>
         }
     }
 
-    /// 返回 subject 对象，如果不存在生成 subject 对象。
     private var lazySubject: Subject {
         if let subject = self._subject {
             return subject

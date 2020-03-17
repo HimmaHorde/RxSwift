@@ -21,27 +21,25 @@ struct BagKey {
 }
 
 /**
-存储对个 T 类型值的结构体
+Data structure that represents a bag of elements typed `T`.
 
- 单个元素可以存储多次。
+Single element can be stored multiple times.
 
- 插入和删除的时间和空间复杂度为O(n)。
+Time and space complexity of insertion and deletion is O(n). 
 
- 它适用于存储少量的元素。
+It is suitable for storing small number of elements.
 */
 struct Bag<T> : CustomDebugStringConvertible {
-    /// 插入元素的标识符的类型。
+    /// Type of identifier for inserted elements.
     typealias KeyType = BagKey
-
-    // key-value 键值对
+    
     typealias Entry = (key: BagKey, value: T)
-
-    // 自增key值
+ 
     private var _nextKey: BagKey = BagKey(rawValue: 0)
 
     // data
 
-    // 存入的第一个变量
+    // first fill inline variables
     var _key0: BagKey?
     var _value0: T?
 
@@ -51,7 +49,6 @@ struct Bag<T> : CustomDebugStringConvertible {
     // last is sparse dictionary
     var _dictionary: [BagKey: T]?
 
-    // 只有一个元素或者没有元素
     var _onlyFastPath = true
 
     /// Creates new empty `Bag`.
@@ -59,10 +56,10 @@ struct Bag<T> : CustomDebugStringConvertible {
     }
     
     /**
-    插入元素
+    Inserts `value` into bag.
     
-    - parameter element: 元素
-    - returns: 返回 Key，key可以用来从 bag 中删除对应的值
+    - parameter element: Element to insert.
+    - returns: Key that can be used to remove element from bag.
     */
     mutating func insert(_ element: T) -> BagKey {
         let key = _nextKey
@@ -77,19 +74,16 @@ struct Bag<T> : CustomDebugStringConvertible {
 
         _onlyFastPath = false
 
-        // 大于最大值之后保存在字典中
         if _dictionary != nil {
             _dictionary![key] = element
             return key
         }
 
-        // 低于最大值保存在数组中
         if _pairs.count < arrayDictionaryMaxSize {
             _pairs.append((key: key, value: element))
             return key
         }
-
-        // 第一次赋值触发，初始化 _dictionary
+        
         _dictionary = [key: element]
         
         return key
@@ -111,7 +105,7 @@ struct Bag<T> : CustomDebugStringConvertible {
     }
     
     /**
-    移除指定 key 相关的值
+    Removes element with a specific `key` from bag.
     
     - parameter key: Key that identifies element to remove from bag.
     - returns: Element that bag contained, or nil in case element was already removed.
@@ -141,7 +135,7 @@ struct Bag<T> : CustomDebugStringConvertible {
 extension Bag {
     /// A textual representation of `self`, suitable for debugging.
     var debugDescription : String {
-        "\(self.count) elements in Bag"
+        return "\(self.count) elements in Bag"
     }
 }
 

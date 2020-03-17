@@ -20,11 +20,12 @@ public protocol ControlEventType : ObservableType {
 
     Properties:
 
-    - 它不会在订阅时发送任何初始值，,
+    - 它不会在订阅时发送任何初始值,
     - 当控件释放时，序列就完成了,
     - 当控件释放时，结束序列,
     - 不会产生 error 事件
-    - 在主线程 `MainScheduler.instance` 订阅监听。
+    - 在主线程 `MainScheduler.instance` 发送事件。
+
 
     **The implementation of `ControlEvent` will ensure that sequence of events is being subscribed on main scheduler
      (`subscribeOn(ConcurrentMainScheduler.instance)` behavior).**
