@@ -1,0 +1,208 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Deprecated.swift",
+      "line": 172,
+      "symbol": "Variable.E",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Deprecated.swift",
+      "line": 225,
+      "symbol": "Variable.deinit",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Disposables/CompositeDisposable.swift",
+      "line": 29,
+      "symbol": "CompositeDisposable.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Disposables/DisposeBag.swift",
+      "line": 81,
+      "symbol": "DisposeBag.deinit",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Disposables/DisposeBase.swift",
+      "line": 17,
+      "symbol": "DisposeBase.deinit",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Disposables/ScheduledDisposable.swift",
+      "line": 16,
+      "symbol": "ScheduledDisposable.scheduler",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Observable.swift",
+      "line": 31,
+      "symbol": "Observable.deinit",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/ObservableType+Extensions.swift",
+      "line": 92,
+      "symbol": "Hooks.DefaultErrorHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/ObservableType+Extensions.swift",
+      "line": 93,
+      "symbol": "Hooks.CustomCaptureSubscriptionCallstack",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Observers/TailRecursiveSink.swift",
+      "line": 15,
+      "symbol": "maxTailRecursiveSinkStackSize",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Rx.swift",
+      "line": 141,
+      "symbol": "Hooks.recordCallStackOnError",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/SchedulerType.swift",
+      "line": 13,
+      "symbol": "RxTimeInterval",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/ConcurrentDispatchQueueScheduler.swift",
+      "line": 17,
+      "symbol": "ConcurrentDispatchQueueScheduler.TimeInterval",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/ConcurrentDispatchQueueScheduler.swift",
+      "line": 18,
+      "symbol": "ConcurrentDispatchQueueScheduler.Time",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/ConcurrentMainScheduler.swift",
+      "line": 20,
+      "symbol": "ConcurrentMainScheduler.TimeInterval",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/ConcurrentMainScheduler.swift",
+      "line": 21,
+      "symbol": "ConcurrentMainScheduler.Time",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/OperationQueueScheduler.swift",
+      "line": 18,
+      "symbol": "OperationQueueScheduler.operationQueue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/OperationQueueScheduler.swift",
+      "line": 19,
+      "symbol": "OperationQueueScheduler.queuePriority",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/SerialDispatchQueueScheduler.swift",
+      "line": 32,
+      "symbol": "SerialDispatchQueueScheduler.TimeInterval",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/SerialDispatchQueueScheduler.swift",
+      "line": 33,
+      "symbol": "SerialDispatchQueueScheduler.Time",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/VirtualTimeScheduler.swift",
+      "line": 13,
+      "symbol": "VirtualTimeScheduler.VirtualTime",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Schedulers/VirtualTimeScheduler.swift",
+      "line": 14,
+      "symbol": "VirtualTimeScheduler.VirtualTimeInterval",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/SwiftSupport/SwiftSupport.swift",
+      "line": 12,
+      "symbol": "RxAbstractInteger",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Completable.swift",
+      "line": 18,
+      "symbol": "CompletableEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Completable.swift",
+      "line": 27,
+      "symbol": "PrimitiveSequenceType.CompletableObserver",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Maybe.swift",
+      "line": 18,
+      "symbol": "MaybeEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Maybe.swift",
+      "line": 30,
+      "symbol": "PrimitiveSequenceType.MaybeObserver",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Single.swift",
+      "line": 18,
+      "symbol": "SingleEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/yanglin/Developer/GitHub/RxSwift/RxSwift/Traits/Single.swift",
+      "line": 27,
+      "symbol": "PrimitiveSequenceType.SingleObserver",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/yanglin/Developer/GitHub/RxSwift"
+}
