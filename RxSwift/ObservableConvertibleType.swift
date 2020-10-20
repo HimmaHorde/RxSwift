@@ -6,20 +6,13 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// protocol:可以转换为 Observable 序列的类型 (`Observable<E>`).
-///
-///    协议方法只有一个 asObservable ,
-///    将自身转换为 Observable<E> 对象。
-///
+/// Type that can be converted to observable sequence (`Observable<Element>`).
 public protocol ObservableConvertibleType {
-    /// 序列中元素的类型。
+    /// Type of elements in sequence.
     associatedtype Element
 
-    @available(*, deprecated, renamed: "Element")
-    typealias E = Element
-
-    /// 转为为 `Observable` 序列.
+    /// Converts `self` to `Observable` sequence.
     ///
-    /// - returns: 由 `self` 转化为的 Observable 序列
+    /// - returns: Observable sequence that represents `self`.
     func asObservable() -> Observable<Element>
 }

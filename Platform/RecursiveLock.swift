@@ -6,7 +6,7 @@
 //  Copyright © 2016 Krunoslav Zaher. All rights reserved.
 //
 
-import class Foundation.NSRecursiveLock
+import Foundation
 
 #if TRACE_RESOURCES
     /// 它可以允许同一线程多次加锁，而不会造成死锁。

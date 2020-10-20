@@ -6,9 +6,9 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// 表示同时是可观察序列和观察者的对象。它不需要初始值就能创建。
+/// Represents an object that is both an observable sequence as well as an observer.
 ///
-/// 每个通知将广播给所有订阅的观察员。一对多的关系。
+/// Each notification is broadcasted to all subscribed observers.
 public final class PublishSubject<Element>
     : Observable<Element>
     , SubjectType
@@ -20,32 +20,29 @@ public final class PublishSubject<Element>
     typealias Observers = AnyObserver<Element>.s
     typealias DisposeKey = Observers.KeyType
     
-    /// 是否有观察者
+    /// Indicates whether the subject has any observers
     public var hasObservers: Bool {
-        self._lock.lock()
-        let count = self._observers.count > 0
-        self._lock.unlock()
-        return count
+        self.lock.performLocked { self.observers.count > 0 }
     }
     
-    private let _lock = RecursiveLock()
+    private let lock = RecursiveLock()
     
     // state
-    private var _isDisposed = false
-    private var _observers = Observers()
-    private var _stopped = false
-    private var _stoppedEvent = nil as Event<Element>?
+    private var disposed = false
+    private var observers = Observers()
+    private var stopped = false
+    private var stoppedEvent = nil as Event<Element>?
 
     #if DEBUG
-        private let _synchronizationTracker = SynchronizationTracker()
+        private let synchronizationTracker = SynchronizationTracker()
     #endif
 
-    /// 是否已处理资源
+    /// Indicates whether the subject has been isDisposed.
     public var isDisposed: Bool {
-        return self._isDisposed
+        self.disposed
     }
     
-    /// 创建实例
+    /// Creates a subject.
     public override init() {
         super.init()
         #if TRACE_RESOURCES
@@ -53,34 +50,32 @@ public final class PublishSubject<Element>
         #endif
     }
     
-    /// 通知所有订阅的观察者下一个事件。
+    /// Notifies all subscribed observers about next event.
     ///
-    /// - parameter event: 事件发送给观察者。
+    /// - parameter event: Event to send to the observers.
     public func on(_ event: Event<Element>) {
         #if DEBUG
-            self._synchronizationTracker.register(synchronizationErrorMessage: .default)
-            defer { self._synchronizationTracker.unregister() }
+            self.synchronizationTracker.register(synchronizationErrorMessage: .default)
+            defer { self.synchronizationTracker.unregister() }
         #endif
-        // 将 event 传入所有的 obsvers.on 事件中。
-        dispatch(self._synchronized_on(event), event)
+        dispatch(self.synchronized_on(event), event)
     }
 
-    // 获取处理订阅事件的集合
-    func _synchronized_on(_ event: Event<Element>) -> Observers {
-        self._lock.lock(); defer { self._lock.unlock() }
+    func synchronized_on(_ event: Event<Element>) -> Observers {
+        self.lock.lock(); defer { self.lock.unlock() }
         switch event {
         case .next:
-            if self._isDisposed || self._stopped {
+            if self.isDisposed || self.stopped {
                 return Observers()
             }
             
-            return self._observers
+            return self.observers
         case .completed, .error:
-            if self._stoppedEvent == nil {
-                self._stoppedEvent = event
-                self._stopped = true
-                let observers = self._observers
-                self._observers.removeAll()
+            if self.stoppedEvent == nil {
+                self.stoppedEvent = event
+                self.stopped = true
+                let observers = self.observers
+                self.observers.removeAll()
                 return observers
             }
 
@@ -89,59 +84,52 @@ public final class PublishSubject<Element>
     }
     
     /**
-    订阅观察者
+    Subscribes an observer to the subject.
     
-    - parameter observer: 观察者
+    - parameter observer: Observer to subscribe to the subject.
     - returns: Disposable object that can be used to unsubscribe the observer from the subject.
     */
     public override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
-        self._lock.lock()
-        let subscription = self._synchronized_subscribe(observer)
-        self._lock.unlock()
-        return subscription
+        self.lock.performLocked { self.synchronized_subscribe(observer) }
     }
 
-    func _synchronized_subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
-        if let stoppedEvent = self._stoppedEvent {
+    func synchronized_subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
+        if let stoppedEvent = self.stoppedEvent {
             observer.on(stoppedEvent)
             return Disposables.create()
         }
         
-        if self._isDisposed {
+        if self.isDisposed {
             observer.on(.error(RxError.disposed(object: self)))
             return Disposables.create()
         }
         
-        let key = self._observers.insert(observer.on)
+        let key = self.observers.insert(observer.on)
         return SubscriptionDisposable(owner: self, key: key)
     }
 
     func synchronizedUnsubscribe(_ disposeKey: DisposeKey) {
-        self._lock.lock()
-        self._synchronized_unsubscribe(disposeKey)
-        self._lock.unlock()
+        self.lock.performLocked { self.synchronized_unsubscribe(disposeKey) }
     }
 
-    func _synchronized_unsubscribe(_ disposeKey: DisposeKey) {
-        _ = self._observers.removeKey(disposeKey)
+    func synchronized_unsubscribe(_ disposeKey: DisposeKey) {
+        _ = self.observers.removeKey(disposeKey)
     }
     
     /// Returns observer interface for subject.
     public func asObserver() -> PublishSubject<Element> {
-        return self
+        self
     }
     
     /// Unsubscribe all observers and release resources.
     public func dispose() {
-        self._lock.lock()
-        self._synchronized_dispose()
-        self._lock.unlock()
+        self.lock.performLocked { self.synchronized_dispose() }
     }
 
-    final func _synchronized_dispose() {
-        self._isDisposed = true
-        self._observers.removeAll()
-        self._stoppedEvent = nil
+    final func synchronized_dispose() {
+        self.disposed = true
+        self.observers.removeAll()
+        self.stoppedEvent = nil
     }
 
     #if TRACE_RESOURCES

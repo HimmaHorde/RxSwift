@@ -20,27 +20,34 @@
  With this approach we can have more specialized methods and properties using
  `Base` and not just specialized on common base type.
 
+ `Binder`s are also automatically synthesized using `@dynamicMemberLookup` for writable reference properties of the reactive base.
  */
 
-public struct Reactive<Base> {
-    /// 要扩展的基本对象。
+@dynamicMemberLookup
+public struct Reactive<Base: AnyObject> {
+    /// Base object to extend.
     public let base: Base
 
-    /// 使用对象创建扩展
+    /// Creates extensions with base object.
     ///
-    /// - parameter base: 对象。
+    /// - parameter base: Base object.
     public init(_ base: Base) {
         self.base = base
+    }
+
+    /// Automatically synthesized binder for a key path between the reactive
+    /// base and one of its properties
+    public subscript<Property>(dynamicMember keyPath: ReferenceWritableKeyPath<Base, Property>) -> Binder<Property> {
+        Binder(self.base) { base, value in
+            base[keyPath: keyPath] = value
+        }
     }
 }
 
 /// A type that has reactive extensions.
-public protocol ReactiveCompatible {
+public protocol ReactiveCompatible: AnyObject {
     /// Extended type
-    associatedtype ReactiveBase
-
-    @available(*, deprecated, renamed: "ReactiveBase")
-    typealias CompatibleType = ReactiveBase
+    associatedtype ReactiveBase: AnyObject
 
     /// Reactive extensions.
     static var rx: Reactive<ReactiveBase>.Type { get set }
@@ -52,28 +59,22 @@ public protocol ReactiveCompatible {
 extension ReactiveCompatible {
     /// Reactive extensions.
     public static var rx: Reactive<Self>.Type {
-        get {
-            return Reactive<Self>.self
-        }
+        get { Reactive<Self>.self }
+        // this enables using Reactive to "mutate" base type
         // swiftlint:disable:next unused_setter_value
-        set {
-            // this enables using Reactive to "mutate" base type
-        }
+        set { }
     }
 
     /// Reactive extensions.
     public var rx: Reactive<Self> {
-        get {
-            return Reactive(self)
-        }
+        get { Reactive(self) }
+        // this enables using Reactive to "mutate" base object
         // swiftlint:disable:next unused_setter_value
-        set {
-            // this enables using Reactive to "mutate" base object
-        }
+        set { }
     }
 }
 
-import class Foundation.NSObject
+import Foundation
 
 /// Extend NSObject with `rx` proxy.
 extension NSObject: ReactiveCompatible { }

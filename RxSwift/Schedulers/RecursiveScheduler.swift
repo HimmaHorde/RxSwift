@@ -6,57 +6,49 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-
-/// 队列状态
-///
-/// - initial: 初始
-/// - added: 添加中
-/// - done: 完成
 private enum ScheduleState {
     case initial
     case added(CompositeDisposable.DisposeKey)
     case done
 }
 
-/// 加递归锁，执行操作。
+/// Type erased recursive scheduler.
 final class AnyRecursiveScheduler<State> {
     
     typealias Action =  (State, AnyRecursiveScheduler<State>) -> Void
 
-    // 递归锁
-    private let _lock = RecursiveLock()
+    private let lock = RecursiveLock()
     
     // state
-    private let _group = CompositeDisposable()
+    private let group = CompositeDisposable()
 
-    private var _scheduler: SchedulerType
-    private var _action: Action?
+    private var scheduler: SchedulerType
+    private var action: Action?
     
     init(scheduler: SchedulerType, action: @escaping Action) {
-        self._action = action
-        self._scheduler = scheduler
+        self.action = action
+        self.scheduler = scheduler
     }
 
     /**
-    调度递归执行的操作。
+    Schedules an action to be executed recursively.
     
-    - parameter state: 状态传递给要执行的操作。
-    - parameter dueTime: 执行递归操作后的相对时间。
+    - parameter state: State passed to the action to be executed.
+    - parameter dueTime: Relative time after which to execute the recursive action.
     */
     func schedule(_ state: State, dueTime: RxTimeInterval) {
         var scheduleState: ScheduleState = .initial
 
-        let d = self._scheduler.scheduleRelative(state, dueTime: dueTime) { state -> Disposable in
+        let d = self.scheduler.scheduleRelative(state, dueTime: dueTime) { state -> Disposable in
             // best effort
-            if self._group.isDisposed {
+            if self.group.isDisposed {
                 return Disposables.create()
             }
-
-            // 给 action 加锁
-            let action = self._lock.calculateLocked { () -> Action? in
+            
+            let action = self.lock.performLocked { () -> Action? in
                 switch scheduleState {
                 case let .added(removeKey):
-                    self._group.remove(for: removeKey)
+                    self.group.remove(for: removeKey)
                 case .initial:
                     break
                 case .done:
@@ -65,10 +57,9 @@ final class AnyRecursiveScheduler<State> {
 
                 scheduleState = .done
 
-                return self._action
+                return self.action
             }
-
-            /// 递归指定 action
+            
             if let action = action {
                 action(state, self)
             }
@@ -76,12 +67,12 @@ final class AnyRecursiveScheduler<State> {
             return Disposables.create()
         }
             
-        self._lock.performLocked {
+        self.lock.performLocked {
             switch scheduleState {
             case .added:
                 rxFatalError("Invalid state")
             case .initial:
-                if let removeKey = self._group.insert(d) {
+                if let removeKey = self.group.insert(d) {
                     scheduleState = .added(removeKey)
                 }
                 else {
@@ -93,22 +84,22 @@ final class AnyRecursiveScheduler<State> {
         }
     }
 
-    /// 调度递归执行的操作。
+    /// Schedules an action to be executed recursively.
     ///
-    /// - parameter state: 状态传递给要执行的操作。
+    /// - parameter state: State passed to the action to be executed.
     func schedule(_ state: State) {
         var scheduleState: ScheduleState = .initial
 
-        let d = self._scheduler.schedule(state) { state -> Disposable in
+        let d = self.scheduler.schedule(state) { state -> Disposable in
             // best effort
-            if self._group.isDisposed {
+            if self.group.isDisposed {
                 return Disposables.create()
             }
             
-            let action = self._lock.calculateLocked { () -> Action? in
+            let action = self.lock.performLocked { () -> Action? in
                 switch scheduleState {
                 case let .added(removeKey):
-                    self._group.remove(for: removeKey)
+                    self.group.remove(for: removeKey)
                 case .initial:
                     break
                 case .done:
@@ -117,7 +108,7 @@ final class AnyRecursiveScheduler<State> {
 
                 scheduleState = .done
                 
-                return self._action
+                return self.action
             }
            
             if let action = action {
@@ -127,12 +118,12 @@ final class AnyRecursiveScheduler<State> {
             return Disposables.create()
         }
         
-        self._lock.performLocked {
+        self.lock.performLocked {
             switch scheduleState {
             case .added:
                 rxFatalError("Invalid state")
             case .initial:
-                if let removeKey = self._group.insert(d) {
+                if let removeKey = self.group.insert(d) {
                     scheduleState = .added(removeKey)
                 }
                 else {
@@ -145,46 +136,46 @@ final class AnyRecursiveScheduler<State> {
     }
     
     func dispose() {
-        self._lock.performLocked {
-            self._action = nil
+        self.lock.performLocked {
+            self.action = nil
         }
-        self._group.dispose()
+        self.group.dispose()
     }
 }
 
-/// 立即执行的递归调度器
+/// Type erased recursive scheduler.
 final class RecursiveImmediateScheduler<State> {
     typealias Action =  (_ state: State, _ recurse: (State) -> Void) -> Void
     
-    private var _lock = SpinLock()
-    private let _group = CompositeDisposable()
+    private var lock = SpinLock()
+    private let group = CompositeDisposable()
     
-    private var _action: Action?
-    private let _scheduler: ImmediateSchedulerType
+    private var action: Action?
+    private let scheduler: ImmediateSchedulerType
     
     init(action: @escaping Action, scheduler: ImmediateSchedulerType) {
-        self._action = action
-        self._scheduler = scheduler
+        self.action = action
+        self.scheduler = scheduler
     }
     
-    // 立即执行
+    // immediate scheduling
     
-    /// 递归执行事件
+    /// Schedules an action to be executed recursively.
     ///
     /// - parameter state: State passed to the action to be executed.
     func schedule(_ state: State) {
         var scheduleState: ScheduleState = .initial
 
-        let d = self._scheduler.schedule(state) { state -> Disposable in
+        let d = self.scheduler.schedule(state) { state -> Disposable in
             // best effort
-            if self._group.isDisposed {
+            if self.group.isDisposed {
                 return Disposables.create()
             }
             
-            let action = self._lock.calculateLocked { () -> Action? in
+            let action = self.lock.performLocked { () -> Action? in
                 switch scheduleState {
                 case let .added(removeKey):
-                    self._group.remove(for: removeKey)
+                    self.group.remove(for: removeKey)
                 case .initial:
                     break
                 case .done:
@@ -193,7 +184,7 @@ final class RecursiveImmediateScheduler<State> {
 
                 scheduleState = .done
 
-                return self._action
+                return self.action
             }
             
             if let action = action {
@@ -203,12 +194,12 @@ final class RecursiveImmediateScheduler<State> {
             return Disposables.create()
         }
         
-        self._lock.performLocked {
+        self.lock.performLocked {
             switch scheduleState {
             case .added:
                 rxFatalError("Invalid state")
             case .initial:
-                if let removeKey = self._group.insert(d) {
+                if let removeKey = self.group.insert(d) {
                     scheduleState = .added(removeKey)
                 }
                 else {
@@ -221,9 +212,9 @@ final class RecursiveImmediateScheduler<State> {
     }
     
     func dispose() {
-        self._lock.performLocked {
-            self._action = nil
+        self.lock.performLocked {
+            self.action = nil
         }
-        self._group.dispose()
+        self.group.dispose()
     }
 }

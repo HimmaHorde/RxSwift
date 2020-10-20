@@ -7,7 +7,7 @@
 //
 
 import Dispatch
-import struct Foundation.TimeInterval
+import Foundation
 
 
 

@@ -6,19 +6,16 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// 表示既是 Observable 序列又是观察者对象
+/// Represents an object that is both an observable sequence as well as an observer.
 public protocol SubjectType : ObservableType {
-    /// 观察者的类型
+    /// The type of the observer that represents this subject.
     ///
-    /// 通常这种类型是自身的类型，但它不一定是。
+    /// Usually this type is type of subject itself, but it doesn't have to be.
     associatedtype Observer: ObserverType
 
-    @available(*, deprecated, renamed: "Observer")
-    typealias SubjectObserverType = Observer
-
-    /// 自身生成观察者对象
+    /// Returns observer interface for subject.
     ///
-    /// - returns: 观察者对象
+    /// - returns: Observer interface for subject.
     func asObserver() -> Observer
-
+    
 }

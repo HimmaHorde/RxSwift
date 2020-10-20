@@ -6,10 +6,8 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import class Foundation.Operation
-import class Foundation.OperationQueue
-import class Foundation.BlockOperation
 import Dispatch
+import Foundation
 
 /// OperationQueueScheduler 抽象了 NSOperationQueue。
 ///

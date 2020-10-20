@@ -6,23 +6,23 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-/// 表示序列的事件。
+/// Represents a sequence event.
 ///
-/// 序列语法:
+/// Sequence grammar: 
 /// **next\* (error | completed)**
-public enum Event<Element> {
-    /// 生成下一个元素。
+@frozen public enum Event<Element> {
+    /// Next element is produced.
     case next(Element)
 
-    /// 序列错误结束。
+    /// Sequence terminated with an error.
     case error(Swift.Error)
 
-    /// 序列正常结束。
+    /// Sequence completed successfully.
     case completed
 }
 
 extension Event: CustomDebugStringConvertible {
-    /// 对事件的描述。
+    /// Description of event.
     public var debugDescription: String {
         switch self {
         case .next(let value):
@@ -36,7 +36,7 @@ extension Event: CustomDebugStringConvertible {
 }
 
 extension Event {
-    /// 是否为 `completed` 或者 `error` 事件.
+    /// Is `completed` or `error` event.
     public var isStopEvent: Bool {
         switch self {
         case .next: return false
@@ -44,7 +44,7 @@ extension Event {
         }
     }
 
-    /// 如果是 `next` 事件, 返回元素值 否则返回 nil.
+    /// If `next` event, returns element value.
     public var element: Element? {
         if case .next(let value) = self {
             return value
@@ -52,7 +52,7 @@ extension Event {
         return nil
     }
 
-    /// 如果是 `error` 事件, 返回 error 否则返回 nil.
+    /// If `error` event, returns error.
     public var error: Swift.Error? {
         if case .error(let error) = self {
             return error
@@ -60,7 +60,7 @@ extension Event {
         return nil
     }
 
-    /// 如果是 `completed` 事件, 返回 `true`.
+    /// If `completed` event, returns `true`.
     public var isCompleted: Bool {
         if case .completed = self {
             return true
@@ -70,7 +70,7 @@ extension Event {
 }
 
 extension Event {
-    /// 遍历转换序列的值. 如果转换过程中发生错误，返回 `.error`。
+    /// Maps sequence elements using transform. If error happens during the transform, `.error`
     /// will be returned as value.
     public func map<Result>(_ transform: (Element) throws -> Result) -> Event<Result> {
         do {
@@ -89,21 +89,16 @@ extension Event {
     }
 }
 
-/// 可以转换为 `Event<Element>` 的类型的协议.
+/// A type that can be converted to `Event<Element>`.
 public protocol EventConvertible {
-    /// 事件中元素的类型
+    /// Type of element in event
     associatedtype Element
 
-    @available(*, deprecated, renamed: "Element")
-    typealias ElementType = Element
-
-    /// 此实例的事件表示形式
+    /// Event representation of this instance
     var event: Event<Element> { get }
 }
 
 extension Event: EventConvertible {
     /// Event representation of this instance
-    public var event: Event<Element> {
-        return self
-    }
+    public var event: Event<Element> { self }
 }

@@ -18,6 +18,6 @@ extension DispatchQueue {
 
     // 是否是主队列
     static var isMain: Bool {
-        return DispatchQueue.getSpecific(key: token) != nil
+        DispatchQueue.getSpecific(key: token) != nil
     }
 }

@@ -26,7 +26,5 @@ extension Disposables {
     /**
      无操作的资源处理
      */
-    static public func create() -> Disposable {
-        return NopDisposable.noOp
-    }
+    static public func create() -> Disposable { NopDisposable.noOp }
 }

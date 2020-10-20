@@ -12,31 +12,31 @@ import RxSwift
 ///
 /// 不会产生 error or completed 事件
 public final class BehaviorRelay<Element>: ObservableType {
-    private let _subject: BehaviorSubject<Element>
+    private let subject: BehaviorSubject<Element>
 
     /// 接受`event`并将其发送给观察者
     public func accept(_ event: Element) {
-        self._subject.onNext(event)
+        self.subject.onNext(event)
     }
 
     /// behavior subject 的当前值
     public var value: Element {
         // this try! is ok because subject can't error out or be disposed
-        return try! self._subject.value()
+        return try! self.subject.value()
     }
 
     /// 使用初始值初始化
     public init(value: Element) {
-        self._subject = BehaviorSubject(value: value)
+        self.subject = BehaviorSubject(value: value)
     }
 
     /// 订阅的观察者
     public func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
-        return self._subject.subscribe(observer)
+        self.subject.subscribe(observer)
     }
 
     /// - returns: Canonical interface for push style sequence
     public func asObservable() -> Observable<Element> {
-        return self._subject.asObservable()
+        self.subject.asObservable()
     }
 }
